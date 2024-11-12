@@ -1,0 +1,9 @@
+model Film {
+  id             Int    @id @default(autoincrement())
+  name           String
+  rating         Int
+  year           Int
+  baseLanguage   String
+  homeCountry    String
+  ageRestriction Int
+}
