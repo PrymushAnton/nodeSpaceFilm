@@ -1,10 +1,12 @@
 model Film {
-  id             Int              @id @default(autoincrement())
-  name           String
+  id             Int             @id @default(autoincrement())
+  name           String          @unique
+  src            String
   rating         Int
   year           Int
   baseLanguage   String
   homeCountry    String
   ageRestriction String
+  description    String
   genres         GenresOnFilms[]
 }
