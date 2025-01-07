@@ -1,11 +1,11 @@
-import repository from "./repository"
+import repository from "../filmsApp/filmsRepository"
 
 
 
 
 async function getAllFilms(){
     const films = await repository.getAllFilms()
-    console.log(films)
+    // console.log(films)
     return films
 }
 

@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 
 const prisma = new PrismaClient();
@@ -168,8 +169,34 @@ async function getAllFilms(){
     return jsonResponse
 }
 
+async function getAllGenres(){
+    try{
+        const genres = await prisma.genre.findMany()
+        console.log(genres)
+        return genres
 
-getAllFilms().then(() => {
+    } catch (error){
+        if (error instanceof PrismaClientKnownRequestError){
+            if (error.code == 'P2002'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2015'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2019'){
+                console.log(error.message)
+                throw error
+            } 
+        }
+    }
+    
+}
+
+
+
+
+
+getAllGenres().then(() => {
     prisma.$disconnect()
 }).catch((err) => {
     console.log(err)

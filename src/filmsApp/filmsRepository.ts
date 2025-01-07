@@ -1,12 +1,11 @@
 import { Prisma, PrismaClient } from "@prisma/client";
-import client from './client/prismaClient'
+import client from '../client/prismaClient'
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 
 interface IJsonResponse{
-    "categories":{
-        "genres": String[]
-    },
+    "id": number,
+    "genres": String[],
     "src": String,
     "name": String,
     "description": String,
@@ -43,9 +42,8 @@ async function getAllFilms(){
 
             
             jsonResponse.push({
-                "categories":{
-                    "genres": genresNames
-                },
+                "id": film.id,
+                "genres": genresNames,
                 "src": film.src,
                 "name": film.name,
                 "description": film.description,
@@ -75,8 +73,8 @@ async function getAllFilms(){
 
 
 
-const repository = {
+const filmsRepository = {
     getAllFilms: getAllFilms
 }
 
-export default repository
+export default filmsRepository
