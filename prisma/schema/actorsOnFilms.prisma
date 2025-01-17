@@ -3,5 +3,6 @@ model actorsOnFilms {
   filmId  Int
   actor   Actor @relation(fields: [actorId], references: [id])
   actorId Int
+
   @@id([filmId, actorId])
 }

@@ -3,5 +3,6 @@ model GenresOnFilms {
   filmId  Int
   genre   Genre @relation(fields: [genreId], references: [id])
   genreId Int
+
   @@id([filmId, genreId])
 }

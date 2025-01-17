@@ -1,5 +1,6 @@
-model Review{
-  id          Int             @id @default(autoincrement())
-  text        String
-  mark        Int
+model Review {
+  id             Int              @id @default(autoincrement())
+  text           String
+  mark           Int
+  reviewsOnUsers reviewsOnUsers[]
 }
