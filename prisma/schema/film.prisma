@@ -9,4 +9,5 @@ model Film {
   ageRestriction String
   description    String
   genres         GenresOnFilms[]
+  photos String[]
 }

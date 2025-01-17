@@ -1,0 +1,5 @@
+model Actor{
+  id          Int             @id @default(autoincrement())
+  actorName   String          @unique
+    
+}
