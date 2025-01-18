@@ -1,8 +1,0 @@
-model reviewsOnUsers {
-  review   Review @relation(fields: [reviewId], references: [id])
-  reviewId Int
-  user     User   @relation(fields: [userId], references: [id])
-  userId   Int
-
-  @@id([reviewId, userId])
-}

@@ -1,4 +1,4 @@
-model actorsOnFilms {
+model ActorsOnFilms {
   film    Film  @relation(fields: [filmId], references: [id])
   filmId  Int
   actor   Actor @relation(fields: [actorId], references: [id])

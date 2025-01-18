@@ -1,7 +1,7 @@
 model Actor {
-  id        Int    @id @default(autoincrement())
-  actorName String @unique
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  src  String
 
-  actorsOnFilms  actorsOnFilms[]
-  reviewsOnFilms reviewsOnFilms[]
+  films ActorsOnFilms[]
 }

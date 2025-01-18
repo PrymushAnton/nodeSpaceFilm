@@ -1,6 +1,6 @@
 model Film {
-  id             Int              @id @default(autoincrement())
-  name           String           @unique
+  id             Int             @id @default(autoincrement())
+  name           String          @unique
   src            String
   rating         Int
   year           Int
@@ -9,10 +9,10 @@ model Film {
   ageRestriction String
   description    String
   genres         GenresOnFilms[]
-  photo1         String
-  photo2         String
-  photo3         String
-  photo4         String
-  actorsOnFilms  actorsOnFilms[]
-  reviewsOnFilms reviewsOnFilms[]
+  photo1         String          @default("What")
+  photo2         String          @default("What")
+  photo3         String          @default("What")
+  photo4         String          @default("What")
+  actors         ActorsOnFilms[]
+  reviews        Review[]
 }
