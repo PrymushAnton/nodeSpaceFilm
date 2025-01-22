@@ -9,4 +9,10 @@ model Film {
   ageRestriction String
   description    String
   genres         GenresOnFilms[]
+  photo1         String          @default("What")
+  photo2         String          @default("What")
+  photo3         String          @default("What")
+  photo4         String          @default("What")
+  actors         ActorsOnFilms[]
+  reviews        Review[]
 }

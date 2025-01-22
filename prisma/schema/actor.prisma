@@ -1,0 +1,7 @@
+model Actor {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  src  String
+
+  films ActorsOnFilms[]
+}
