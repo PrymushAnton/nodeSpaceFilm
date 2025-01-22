@@ -18,7 +18,6 @@ async function getAllGenres(){
     try{
         const genres = await client.genre.findMany()
         return genres
-
     } catch (error){
         if (error instanceof PrismaClientKnownRequestError){
             if (error.code == 'P2002'){
@@ -35,7 +34,6 @@ async function getAllGenres(){
     }
     
 }
-
 
 
 

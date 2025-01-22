@@ -12,6 +12,15 @@ async function getAllFilms(req: Request, res: Response){
 }
 
 
+async function getFilmById(req: Request, res: Response){
+
+    const id = +req.params.id
+    const film = await filmsService.getFilmById(id)
+    res.json(film)
+
+}
+
+
 const filmsController = {
     getAllFilms: getAllFilms
 }
