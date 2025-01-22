@@ -3,11 +3,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 const prisma = new PrismaClient();
 
-async function createGenresAndFilmsWithGenres() {
-
-
-
-
+async function createDataBase() {
 	const genres = await prisma.genre.createMany({
 		data: [
 			{
@@ -349,30 +345,73 @@ async function createGenresAndFilmsWithGenres() {
 		}
 	})
 
-	const review1 = await prisma.review.create({
-		data: {
-
-			text: "The best film I have ever seen!",
-			mark: 10,
-				
-		},
-
-	})
+	
 
 	const user1 = await prisma.user.create({
 		data: {
-			name: "Judy Greer",
-			src: "https://m.media-amazon.com/images/M/MV5BMTg5MTAyMzMzMl5BMl5BanBnXkFtZTcwMDY2Mzc2NQ@@._V1_QL75_UX140_CR0,11,140,140_.jpg",
-			
-			review: {
-				create: [
-					{
-						text: "The best film I have ever seen!",
-					
-					},
-				]
-			}
+			name: "Serj",
+			src: "https://masterpiecer-images.s3.yandex.net/a809a13ba68211eea092b2bae0cf569f:upscaled",
 		}
+	})
+
+	const user2 = await prisma.user.create({
+		data: {
+			name: "Roman",
+			src: "https://masterpiecer-images.s3.yandex.net/1d9aa8e5833111eea173beb332dff282:upscaled",
+		}
+	})
+
+	const user3 = await prisma.user.create({
+		data: {
+			name: "SeRo",
+			src: "https://masterpiecer-images.s3.yandex.net/bb429de19eed11eea139b646b2a0ffc1:upscaled",
+		}
+	})
+
+
+	const reviews = await prisma.review.createMany({
+		data: [
+			{
+				text: "The best film I have ever seen!",
+				mark: 10,
+				userId: 1,
+				filmId: 1
+			},
+			{
+				text: "Characters in this film are not playing great, I do not recommend this film.",
+				mark: 4,
+				userId: 1,
+				filmId: 2
+			},
+			{
+				text: "Solid 6.",
+				mark: 6,
+				userId: 1,
+				filmId: 3
+			},
+
+
+			{
+				text: "The greatest film of all times! 10/10",
+				mark: 10,
+				userId: 2,
+				filmId: 2
+			},
+			{
+				text: "I didnt like it",
+				mark: 3,
+				userId: 2,
+				filmId: 3
+			},
+
+
+			{
+				text: "I am not satisfied after watching this film.",
+				mark: 5,
+				userId: 3,
+				filmId: 1
+			}
+		]
 	})
 }
 
@@ -447,7 +486,7 @@ async function getAllGenres() {
 	}
 }
 
-createGenresAndFilmsWithGenres()
+createDataBase()
 	.then(() => {
 		prisma.$disconnect();
 	})
