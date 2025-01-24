@@ -6,7 +6,7 @@ import filmsService from "./filmsService";
 async function getAllFilms(req: Request, res: Response){
 
     const films = await filmsService.getAllFilms()
-    console.log(films)
+    console.log("asdasdasdasdas",films)
     res.json(films)
 
 }
@@ -22,7 +22,8 @@ async function getFilmById(req: Request, res: Response){
 
 
 const filmsController = {
-    getAllFilms: getAllFilms
+    getAllFilms: getAllFilms,
+    getFilmById: getFilmById
 }
 
 export default filmsController

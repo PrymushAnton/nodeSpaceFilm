@@ -378,6 +378,12 @@ async function createDataBase() {
 				filmId: 1
 			},
 			{
+				text: "I have changed my mind: this film is quite mediocre.",
+				mark: 6,
+				userId: 1,
+				filmId: 1
+			},
+			{
 				text: "Characters in this film are not playing great, I do not recommend this film.",
 				mark: 4,
 				userId: 1,
