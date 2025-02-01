@@ -5,6 +5,8 @@ import cors from "cors"
 
 import filmsRouter from './filmsApp/filmsRouter'
 import genresRouter from './genresApp/genresRouter'
+import actorsRouter from './actorsApp/actorsRouter'
+import directorsRouter from './directorsApp/directorsRouter'
 
 
 const app: Express = express()
@@ -19,6 +21,10 @@ app.use(cors())
 
 app.use('/film/', filmsRouter)
 app.use('/genre/', genresRouter)
+app.use('/actor/', actorsRouter)
+app.use('/director/', directorsRouter)
+
+
 
 // app.get('/', (req:Request, res: Response) => {
 //     res.render('home')

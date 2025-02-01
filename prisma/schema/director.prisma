@@ -1,4 +1,4 @@
-model Actor {
+model Director {
   id Int @id @default(autoincrement())
 
   name          String @unique
@@ -11,5 +11,5 @@ model Actor {
   mother        String
   father        String
 
-  films ActorsOnFilms[]
+  films DirectorsOnFilms[]
 }

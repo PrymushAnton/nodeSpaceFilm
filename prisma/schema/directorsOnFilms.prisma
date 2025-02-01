@@ -1,0 +1,8 @@
+model DirectorsOnFilms {
+  film       Film     @relation(fields: [filmId], references: [id])
+  filmId     Int
+  director   Director @relation(fields: [directorId], references: [id])
+  directorId Int
+
+  @@id([filmId, directorId])
+}
