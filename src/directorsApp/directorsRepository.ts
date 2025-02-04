@@ -1,6 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import client from '../client/prismaClient'
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { dir } from "console";
 
 
 async function getAllDirectors(){
@@ -33,7 +34,25 @@ async function getDirectorById(id:number){
                 id: id
             }
         })
-        return director
+
+        let directorsOnFilms = await client.directorsOnFilms.findMany({
+            where: {
+                directorId: director?.id
+            }
+        })
+
+
+        let allFilms = await client.film.findMany()
+        allFilms = allFilms.filter((film) => {
+            return directorsOnFilms.some((obj) => {
+                return film.id === obj.filmId
+            })
+        })
+
+        return {
+            ...director,
+            films: allFilms
+        }
     } catch (error){
         if (error instanceof PrismaClientKnownRequestError){
             if (error.code == 'P2002'){

@@ -33,7 +33,24 @@ async function getActorById(id:number){
                 id: id
             }
         })
-        return actor
+        let actorsOnFilms = await client.actorsOnFilms.findMany({
+            where: {
+                actorId: actor?.id
+            }
+        })
+
+
+        let allFilms = await client.film.findMany()
+        allFilms = allFilms.filter((film) => {
+            return actorsOnFilms.some((obj) => {
+                return film.id === obj.filmId
+            })
+        })
+
+        return {
+            ...actor,
+            films: allFilms
+        }
     } catch (error){
         if (error instanceof PrismaClientKnownRequestError){
             if (error.code == 'P2002'){
