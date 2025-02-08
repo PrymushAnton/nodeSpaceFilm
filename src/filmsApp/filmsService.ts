@@ -5,7 +5,6 @@ import filmsRepository from "./filmsRepository"
 
 async function getAllFilms(){
     const films = await filmsRepository.getAllFilms()
-    console.log("service",films)
     return films
 }
 

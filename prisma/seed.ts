@@ -320,7 +320,7 @@ async function createDataBase() {
 				],
 			},
 			photo1: "https://m.media-amazon.com/images/M/MV5BMTUwNDM4MjQxMF5BMl5BanBnXkFtZTcwMzU3OTUyNw@@._V1_.jpg",
-			photo2: "https://m.media-amazon.com/images/M/MV5BMTUwNDM4MjQxMF5BMl5BanBnXkFtZTcwMzU3OTUyNw@@._V1_.jpg",
+			photo2: "https://m.media-amazon.com/images/M/MV5BMzAyOTI3Njg3OV5BMl5BanBnXkFtZTcwNzI3OTUyNw@@._V1_.jpg",
 			photo3: "https://m.media-amazon.com/images/M/MV5BNzk0Njk5NDEzMl5BMl5BanBnXkFtZTcwMjY3OTUyNw@@._V1_.jpg",
 			photo4: "https://m.media-amazon.com/images/M/MV5BMzIyMTg2MjM0Nl5BMl5BanBnXkFtZTcwMjM3OTUyNw@@._V1_.jpg"
 		},
@@ -563,7 +563,7 @@ async function createDataBase() {
 					},
 				],
 			},
-			photo1: "https://m.media-amazon.com/images/M/MV5BNWRlZDBlNDAtNzhlMS00NjBkLWI0ZGMtMGU1MTM4OTk4OWMyXkEyXkFqcGc@._V1_.jpg",
+			photo1: "https://m.media-amazon.com/images/M/MV5BMWIxYTViYTQtODU3ZC00NTQyLWJiMjQtZjYxYzMxMTg5Y2UzXkEyXkFqcGc@._V1_.jpg",
 			photo2: "https://m.media-amazon.com/images/M/MV5BNWRlZDBlNDAtNzhlMS00NjBkLWI0ZGMtMGU1MTM4OTk4OWMyXkEyXkFqcGc@._V1_.jpg",
 			photo3: "https://m.media-amazon.com/images/M/MV5BOGY4OGE1OTctYWVmMS00NzJiLWE2NzktMmQwYTJhNGJkN2E0XkEyXkFqcGc@._V1_.jpg",
 			photo4: "https://m.media-amazon.com/images/M/MV5BYTY4YWE5MDQtNTQ1NC00OWY5LWI0NzAtYzBmZGJhOGVhYjMyXkEyXkFqcGc@._V1_.jpg"

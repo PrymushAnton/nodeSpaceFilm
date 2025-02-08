@@ -52,13 +52,13 @@ async function getAllFilms(){
         
         films.forEach((film) => {
 
-            genresOnFilms = genresOnFilms.filter((pair) => {
+            let genresOnFilmsTemp = genresOnFilms.filter((pair) => {
                 return film.id == pair.filmId;
             })
 
             let genresNames = <string[]>[]
 
-            genresOnFilms.forEach((pair) => {
+            genresOnFilmsTemp.forEach((pair) => {
                 genres.forEach((genre) => {
                     if (genre.id == pair.genreId){
                         genresNames.push(genre.name)
@@ -67,13 +67,13 @@ async function getAllFilms(){
             })
 
             //
-            actorsOnFilms = actorsOnFilms.filter((pair) => {
+            let actorsOnFilmsTemp = actorsOnFilms.filter((pair) => {
                 return film.id == pair.filmId;
             })
 
             let actorsNames = <string[]>[]
 
-            actorsOnFilms.forEach((pair) => {
+            actorsOnFilmsTemp.forEach((pair) => {
                 actors.forEach((actor) => {
                     if (actor.id == pair.actorId){
                         actorsNames.push(actor.name)
@@ -84,12 +84,11 @@ async function getAllFilms(){
 
             
             //
-            reviews = reviews.filter((review) => {
+            let reviewsTemp = reviews.filter((review) => {
                 return review.filmId == film.id
             })
 
-            let correctReviews = []
-            correctReviews = reviews.map((review) => {
+            let correctReviews = reviewsTemp.map((review) => {
                 return {
                     "text": review.text,
                     "mark": review.mark,
