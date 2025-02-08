@@ -365,7 +365,7 @@ async function createDataBase() {
 	const film8 = await prisma.film.create({
 		data: {
 			name: "Skyscraper",
-			src: "https://m.media-amazon.com/images/M/MV5BMTFmNTY1ODQtZjQzNi00MjI2LWFiNDctYTg3MjVkZGI5NTZhXkEyXkFqcGc@._V1_.jpg",
+			src: "https://m.media-amazon.com/images/M/MV5BNWYyYTExNWMtZGYyYy00YTEzLTg5MzEtY2YyMDI3MDNlMjcwXkEyXkFqcGc@._V1_.jpg",
 			rating: 6,
 			year: 2018,
 			baseLanguage: "English",
@@ -408,7 +408,7 @@ async function createDataBase() {
 	const film9 = await prisma.film.create({
 		data: {
 			name: "Pain & Gain",
-			src: "https://m.media-amazon.com/images/M/MV5BMTFmNTY1ODQtZjQzNi00MjI2LWFiNDctYTg3MjVkZGI5NTZhXkEyXkFqcGc@._V1_.jpg",
+			src: "https://m.media-amazon.com/images/M/MV5BMTU0NDE5NTU0OV5BMl5BanBnXkFtZTcwMzI1OTMzOQ@@._V1_.jpg",
 			rating: 6,
 			year: 2013,
 			baseLanguage: "English",
@@ -451,7 +451,7 @@ async function createDataBase() {
 	const film10 = await prisma.film.create({
 		data: {
 			name: "Central Intelligence",
-			src: "https://m.media-amazon.com/images/M/MV5BOTYyZGJjODYtZjBmYS00YTVmLWFhOWYtOGVhZDgxMTdhMmVlXkEyXkFqcGc@._V1_.jpg",
+			src: "https://m.media-amazon.com/images/M/MV5BMjA2NzEzNjIwNl5BMl5BanBnXkFtZTgwNzgwMTEzNzE@._V1_.jpg",
 			rating: 6,
 			year: 2016,
 			baseLanguage: "English",
