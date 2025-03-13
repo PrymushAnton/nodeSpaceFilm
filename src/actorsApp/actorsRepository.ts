@@ -1,6 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import client from '../client/prismaClient'
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { ActorCreatePayload, ActorDeletePayload, ActorUpdatePayload } from "./types";
 
 
 async function getAllActors(){
@@ -65,12 +66,176 @@ async function getActorById(id:number){
             } 
         }
     }
+}
+
+async function getAllNameActors(){
+    try{
+        const actors = await client.actor.findMany(
+            {
+                select:{
+                    id: true,
+                    name: true
+                }
+            }
+        )
+        return actors
+    } catch (error){
+        if (error instanceof PrismaClientKnownRequestError){
+            if (error.code == 'P2002'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2015'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2019'){
+                console.log(error.message)
+                throw error
+            } 
+        }
+    }
+}
+
+
+async function getActorByIdFull(id:number){
+    try{
+        const actor = await client.actor.findUnique({
+            where: {
+                id: id
+            },
+            include: {
+                films: true
+            }
+        })
+        return actor
+    } catch (error){
+        if (error instanceof PrismaClientKnownRequestError){
+            if (error.code == 'P2002'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2015'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2019'){
+                console.log(error.message)
+                throw error
+            } 
+        }
+    }
+}
+
+
+async function createOneActor(data: ActorCreatePayload){
+    const {films, ...actorData} = data
+
+    try {
+        const actor = await client.actor.create({
+            data: actorData
+        })
+
+        const actorsOnFilms = await client.actorsOnFilms.createMany({
+            data: films.map((filmId) => {
+                return {filmId:filmId, actorId: actor.id}
+            })
+        })
+
+        return [actor, actorsOnFilms]
+    } catch (error){
+        if (error instanceof PrismaClientKnownRequestError){
+            if (error.code == 'P2002'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2015'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2019'){
+                console.log(error.message)
+                throw error
+            } 
+        }
+    }
     
+}
+
+async function updateOneActor(data: ActorUpdatePayload){
+    const {films, ...actorData} = data
+
+    try {
+        const actor = await client.actor.update({
+            where: {
+                id: actorData.id
+            },
+            data: actorData
+        })
+
+        await client.actorsOnFilms.deleteMany({
+            where: {
+                actorId: actorData.id
+            }
+        })
+
+        await client.actorsOnFilms.createMany({
+            data: films.map((filmId) => {
+                return {filmId:filmId, actorId: actor.id}
+            })
+        })
+
+        return actor
+    } catch (error){
+        if (error instanceof PrismaClientKnownRequestError){
+            if (error.code == 'P2002'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2015'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2019'){
+                console.log(error.message)
+                throw error
+            } 
+        }
+    }
+}
+
+async function deleteOneActor(data: ActorDeletePayload){
+
+    try {
+        const actor = await client.actor.delete({
+            where: {
+                id: data.id
+            }
+        })
+
+        await client.actorsOnFilms.deleteMany({
+            where: {
+                actorId: data.id
+            }
+        })
+
+        return actor
+    } catch (error){
+        if (error instanceof PrismaClientKnownRequestError){
+            if (error.code == 'P2002'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2015'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2019'){
+                console.log(error.message)
+                throw error
+            } 
+        }
+    }
 }
 
 const actorsRepository = {
     getAllActors: getAllActors,
-    getActorById: getActorById
+    getActorById: getActorById,
+    getAllNameActors: getAllNameActors,
+    getActorByIdFull: getActorByIdFull,
+    createOneActor: createOneActor,
+    updateOneActor: updateOneActor,
+    deleteOneActor: deleteOneActor
 }
 
 export default actorsRepository

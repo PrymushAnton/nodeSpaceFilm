@@ -1049,6 +1049,7 @@ async function createDataBase() {
 		}
 	})
 
+	
 
 	const reviews = await prisma.review.createMany({
 		data: [
