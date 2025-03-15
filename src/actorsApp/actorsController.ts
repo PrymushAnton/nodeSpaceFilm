@@ -41,17 +41,18 @@ async function createOneActor(req: Request, res: Response){
 }
 
 async function updateOneActor(req: Request, res: Response){
-    const data: ActorUpdatePayload = req.body
-
-    const actor = await actorsService.updateOneActor(data)
-    res.json(actor)
+    const data = req.body
+    console.log("update",data)
+    // const actor = await actorsService.updateOneActor(data)
+    res.json({status: "update"})
 }
 
 async function deleteOneActor(req: Request, res: Response){
-    const data: ActorDeletePayload = req.body
+    const data = req.body
+    console.log("delete",data)
 
-    const actor = await actorsService.deleteOneActor(data)
-    res.json(actor)
+    // const actor = await actorsService.deleteOneActor(data)
+    res.json({status: "delete"})
 }
 
 

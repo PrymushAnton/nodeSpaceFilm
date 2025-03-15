@@ -103,9 +103,17 @@ async function getActorByIdFull(id:number){
                 id: id
             },
             include: {
-                films: true
+                films: {
+                    omit: {
+                        actorId: true
+                    }
+                }
+            },
+            omit: {
+                id: true
             }
         })
+
         return actor
     } catch (error){
         if (error instanceof PrismaClientKnownRequestError){

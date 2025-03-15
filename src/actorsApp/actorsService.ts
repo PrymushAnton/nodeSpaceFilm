@@ -1,5 +1,5 @@
 import actorsRepository from "./actorsRepository"
-import { ActorCreatePayload, ActorDeletePayload, ActorPayload, ActorUpdatePayload } from './types';
+import { ActorCreatePayload, ActorDeletePayload, ActorGetPayload, ActorPayload, ActorUpdatePayload } from './types';
 import { IError, ISuccess } from "../types/types";
 
 
@@ -21,7 +21,44 @@ async function getAllNameActors(){
 
 async function getActorByIdFull(id: number){
     const actor = await actorsRepository.getActorByIdFull(id)
-    return actor
+
+    if (!actor) return {error: "error"}
+    
+    
+    const modifiedActor = {
+        ...actor,
+        films: actor.films.map((film) => {
+            return film.filmId
+        })
+    }
+    // src
+    const {films, biography, ...actorData} = modifiedActor
+    
+    const actorObj = {
+        ...Object.fromEntries(
+            Object.entries(actorData).map(([key, value]) => [
+                key,
+                { 
+                    type: typeof value === 'string' ? 'text' : typeof value,
+                    data: value 
+                }
+            ])
+        ),
+        // src: {
+        //     type: "image",
+        //     data: src
+        // }, 
+        biography: {
+            type: "textarea",
+            data: biography
+        },
+        films: {
+            type: "manytomany",
+            data: films
+        }
+    }
+
+    return actorObj
 }
 
 async function createOneActor(data: ActorCreatePayload){

@@ -15,12 +15,13 @@ const PORT = 3001
 const HOST = 'localhost'
 
 
-app.set('views', join(__dirname, 'templates'))
-app.use('/static/', express.static(join(__dirname, 'static')))
-
 app.use(cors({
     origin: ['http://localhost:3000']
 }))
+
+app.set('views', join(__dirname, 'templates'))
+app.use('/static/', express.static(join(__dirname, 'static')))
+app.use(express.json())
 
 app.use('/api/film/', filmsRouter)
 app.use('/api/genre/', genresRouter)
@@ -30,5 +31,5 @@ app.use('/api/admin/', adminRouter)
 
 
 app.listen(PORT, HOST, ()=>{
-    console.log(`http://localhost:${PORT}`)
+    console.log(`http://${HOST}:${PORT}`)
 })

@@ -6,7 +6,6 @@ import genresService from "./genresService";
 async function getAllGenres(req: Request, res: Response){
 
     const genres = await genresService.getAllGenres()
-    console.log(genres)
     res.json(genres)
 
 }

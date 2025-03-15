@@ -326,11 +326,37 @@ async function getFilmById(id: number){
 }
 
 
+async function getFilmsNameAndId(){
+    try{
+        const films = await client.film.findMany({
+            select:{
+                id: true,
+                name: true
+            }
+        })
+        console.log(films)
+        return films
+    } catch (error){
+        if (error instanceof PrismaClientKnownRequestError){
+            if (error.code == 'P2002'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2015'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2019'){
+                console.log(error.message)
+                throw error
+            } 
+        }
+    }
+}
 
 
 const filmsRepository = {
     getAllFilms: getAllFilms,
-    getFilmById: getFilmById
+    getFilmById: getFilmById,
+    getFilmsNameAndId: getFilmsNameAndId
 }
 
 export default filmsRepository

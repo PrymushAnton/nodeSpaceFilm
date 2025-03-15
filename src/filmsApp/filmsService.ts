@@ -14,9 +14,17 @@ async function getFilmById(id: number){
 }
 
 
+async function getFilmsNameAndId(){
+    const films = await filmsRepository.getFilmsNameAndId()
+    return films
+}
+
+
+
 
 const filmsService = {
     getAllFilms: getAllFilms,
-    getFilmById: getFilmById
+    getFilmById: getFilmById,
+    getFilmsNameAndId: getFilmsNameAndId
 }
 export default filmsService
