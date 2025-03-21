@@ -1,4 +1,4 @@
-import genresRepository from "./genresRepository"
+import genresRepository from "./reviewRepository"
 
 
 
@@ -10,8 +10,8 @@ async function getAllGenres(){
 }
 
 
-async function getGenresNameAndId(){
-    const genres = await genresRepository.getGenresNameAndId()
+async function getReviewsNameAndId(){
+    const genres = await genresRepository.getReviewsNameAndId()
     // console.log(films)
     return genres
 }
@@ -19,7 +19,7 @@ async function getGenresNameAndId(){
 
 const genresService = {
     getAllGenres: getAllGenres,
-    getGenresNameAndId: getGenresNameAndId
+    getReviewsNameAndId: getReviewsNameAndId
 }
 
 export default genresService

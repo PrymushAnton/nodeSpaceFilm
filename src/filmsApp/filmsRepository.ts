@@ -1,6 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import client from '../client/prismaClient'
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { FilmCreatePayload, FilmDeletePayload, FilmUpdatePayload } from "./types";
 
 
 interface IUser{
@@ -134,7 +135,6 @@ async function getAllFilms(){
 
         return jsonResponse
     } catch (error){
-        console.log(error)
         if (error instanceof PrismaClientKnownRequestError){
             if (error.code == 'P2002'){
                 console.log(error.message)
@@ -210,66 +210,6 @@ async function getFilmById(id: number){
             }
         })
 
-        // genresOnFilms = genresOnFilms.filter((pair) => {
-        //     return film.id == pair.filmId;
-        // })
-
-        // let genresNames = <string[]>[]
-
-        // genresOnFilms.forEach((pair) => {
-        //     genres.forEach((genre) => {
-        //         if (genre.id == pair.genreId){
-        //             genresNames.push(genre.name)
-        //         }
-        //     }) 
-        // })
-
-        //
-        // actorsOnFilms = actorsOnFilms.filter((pair) => {
-        //     return film.id == pair.filmId;
-        // })
-
-        // let actorsNames = <string[]>[]
-
-        // actorsOnFilms.forEach((pair) => {
-        //     actors.forEach((actor) => {
-        //         if (actor.id == pair.actorId){
-        //             actorsNames.push(actor.name)
-        //         }
-        //     }) 
-        // })
-
-
-        
-        //
-        // reviews = reviews.filter((review) => {
-        //     return review.filmId == film.id
-        // })
-
-        // let correctReviews = []
-        // correctReviews = reviews.map((review) => {
-        //     return {
-        //         "text": review.text,
-        //         "mark": review.mark,
-        //         "userId": review.userId
-        //     }
-        // })
-        // let finalReviews: any = []
-        // correctReviews.forEach((review) => {
-        //     users.forEach((user) => {
-        //         if (user.id === review.userId) {
-        //             finalReviews.push({
-        //                 "text": review.text,
-        //                 "mark": review.mark,
-        //                 "user": {
-        //                     "src": user.src,
-        //                     "name": user.name
-        //                 }
-        //             })
-        //         }
-        //     })
-        // })
-
         let finalReviews: Object[] = []
         users.forEach((user) => {
             reviews.forEach(review => {
@@ -334,7 +274,6 @@ async function getFilmsNameAndId(){
                 name: true
             }
         })
-        console.log(films)
         return films
     } catch (error){
         if (error instanceof PrismaClientKnownRequestError){
@@ -352,11 +291,235 @@ async function getFilmsNameAndId(){
     }
 }
 
+async function getFilmByIdFull(id:number){
+    try{
+        const film = await client.film.findUnique({
+            where: {
+                id: id
+            },
+            include: {
+                genres: {
+                    select:{
+                        genreId: true
+                    }
+                },
+                actors: {
+                    select: {
+                        actorId: true
+                    }
+                },
+                directors: {
+                    select: {
+                        directorId: true
+                    }
+                }
+            },
+            omit: {
+                id: true
+            }
+        })
+        console.log(film)
+        return film
+    } catch (error){
+        if (error instanceof PrismaClientKnownRequestError){
+            if (error.code == 'P2002'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2015'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2019'){
+                console.log(error.message)
+                throw error
+            } 
+        }
+    }
+}
+
+async function getFilmFields(){
+    try{
+        const fields = Prisma.dmmf.datamodel.models.find(model => model.name === "Film")?.fields
+        return fields
+    } catch (error){
+        if (error instanceof PrismaClientKnownRequestError){
+            if (error.code == 'P2002'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2015'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2019'){
+                console.log(error.message)
+                throw error
+            } 
+        }
+    }
+}
+
+
+async function createOneFilm(data: FilmCreatePayload){
+    const {actors, directors, genres, ...filmData} = data
+
+    try {
+
+        const isFilmExists = await client.actor.findUnique({
+            where:{
+                name: filmData.name
+            }
+        })
+
+        if (isFilmExists) return {status: "error", message: "Film already exists"}
+
+        const film = await client.film.create({
+            data: filmData
+        })
+
+        const actorsOnFilms = await client.actorsOnFilms.createMany({
+            data: actors.map((actorId) => {
+                return {filmId:film.id, actorId: +actorId}
+            })
+        })
+
+        const directorsOnFilms = await client.directorsOnFilms.createMany({
+            data: directors.map((directorId) => {
+                return {filmId:film.id, directorId: +directorId}
+            })
+        })
+
+        const genresOnFilms = await client.genresOnFilms.createMany({
+            data: genres.map((genreId) => {
+                return {filmId:film.id, genreId: +genreId}
+            })
+        })
+        return {status: "success"}
+    } catch (error){
+        if (error instanceof PrismaClientKnownRequestError){
+            if (error.code == 'P2002'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2015'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2019'){
+                console.log(error.message)
+                throw error
+            } 
+        }
+    }
+    
+}
+
+async function updateOneFilm(data: FilmUpdatePayload){
+    const {actors, directors, genres, ...filmData} = data
+
+    try {
+        const film = await client.film.update({
+            where: {
+                id: +filmData.id
+            },
+            data: filmData
+        })
+
+
+
+        await client.actorsOnFilms.deleteMany({
+            where: {
+                filmId: +filmData.id
+            }
+        })
+
+        await client.actorsOnFilms.createMany({
+            data: actors.map((actorId) => {
+                return {filmId:film.id, actorId: +actorId}
+            })
+        })
+
+
+
+        await client.directorsOnFilms.deleteMany({
+            where: {
+                filmId: +filmData.id
+            }
+        })
+
+        await client.directorsOnFilms.createMany({
+            data: directors.map((directorId) => {
+                return {filmId:film.id, directorId: +directorId}
+            })
+        })
+
+
+
+        await client.genresOnFilms.deleteMany({
+            where: {
+                filmId: +filmData.id
+            }
+        })
+
+        await client.genresOnFilms.createMany({
+            data: genres.map((genreId) => {
+                return {filmId: film.id, genreId: +genreId}
+            })
+        })
+
+        return film
+    } catch (error){
+        if (error instanceof PrismaClientKnownRequestError){
+            if (error.code == 'P2002'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2015'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2019'){
+                console.log(error.message)
+                throw error
+            } 
+        }
+    }
+}
+
+async function deleteOneFilm(data: FilmDeletePayload){
+    try {
+        await client.actorsOnFilms.deleteMany({
+            where: {
+                filmId: data.id
+            }
+        })
+
+        const film = await client.film.delete({
+            where: {
+                id: data.id
+            }
+        })
+
+        return film
+    } catch (error){
+        console.log(error)
+        if (error instanceof PrismaClientKnownRequestError){
+            if (error.code == 'P2002'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2015'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2019'){
+                console.log(error.message)
+                throw error
+            } 
+        }
+    }
+}
 
 const filmsRepository = {
     getAllFilms: getAllFilms,
     getFilmById: getFilmById,
-    getFilmsNameAndId: getFilmsNameAndId
+    getFilmsNameAndId: getFilmsNameAndId,
+    getFilmByIdFull: getFilmByIdFull,
+    getFilmFields: getFilmFields,
+    createOneFilm: createOneFilm,
+    updateOneFilm: updateOneFilm,
+    deleteOneFilm: deleteOneFilm
 }
 
 export default filmsRepository

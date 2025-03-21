@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 
-import genresService from "./genresService";
+import genresService from "./reviewService";
 
 
 async function getAllGenres(req: Request, res: Response){
@@ -11,16 +11,16 @@ async function getAllGenres(req: Request, res: Response){
 }
 
 
-async function getGenresNameAndId(req: Request, res: Response){
+async function getReviewsNameAndId(req: Request, res: Response){
 
-    const genres = await genresService.getGenresNameAndId()
+    const genres = await genresService.getReviewsNameAndId()
     res.json(genres)
 
 }
 
 const genresController = {
     getAllGenres: getAllGenres,
-    getGenresNameAndId: getGenresNameAndId
+    getReviewsNameAndId: getReviewsNameAndId
 }
 
 export default genresController

@@ -31,7 +31,6 @@ async function getActorByIdFull(id: number){
             return film.filmId
         })
     }
-    // src
     const {films, biography, ...actorData} = modifiedActor
     
     const actorObj = {
@@ -44,17 +43,14 @@ async function getActorByIdFull(id: number){
                 }
             ])
         ),
-        // src: {
-        //     type: "image",
-        //     data: src
-        // }, 
+
         biography: {
             type: "textarea",
             data: biography
         },
         films: {
             type: "manytomany",
-            data: films
+            data: films.map(film => String(film))
         }
     }
 
@@ -63,6 +59,7 @@ async function getActorByIdFull(id: number){
 
 async function createOneActor(data: ActorCreatePayload){
     const actor = await actorsRepository.createOneActor(data)
+    console.log(actor)
     return actor
 }
 
@@ -72,8 +69,43 @@ async function updateOneActor(data: ActorUpdatePayload){
 }
 
 async function deleteOneActor(data: ActorDeletePayload){
+
     const actor = await actorsRepository.deleteOneActor(data)
+    // console.log(actor)
+
     return actor
+}
+
+
+async function getActorFields(){
+    const fields = await actorsRepository.getActorFields()
+
+    interface LooseObject {
+        [key: string]: any
+    }
+    const object: LooseObject = {}
+    
+    fields?.forEach(field => {
+        if (field.name === "id") return
+
+        object[field.name] = {
+            type: field.type === "ActorsOnFilms" 
+                ? "manytomany"
+                : field.type === "Int" 
+                    ? "number" 
+                    : field.type === "String"
+                        ? "text"
+                        : field.type.toLowerCase(),
+            data: field.type === "ActorsOnFilms" 
+                ? [] as number[] 
+                : field.type === "Int" 
+                    ? 0
+                    : ""
+        }
+
+        
+    })
+    return object
 }
 
 
@@ -84,7 +116,8 @@ const actorsService = {
     getActorByIdFull: getActorByIdFull,
     createOneActor: createOneActor,
     updateOneActor: updateOneActor,
-    deleteOneActor: deleteOneActor
+    deleteOneActor: deleteOneActor,
+    getActorFields: getActorFields
 }
 
 export default actorsService

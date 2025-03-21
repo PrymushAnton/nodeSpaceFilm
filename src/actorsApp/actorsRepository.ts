@@ -132,21 +132,34 @@ async function getActorByIdFull(id:number){
 }
 
 
+
+
+
+
 async function createOneActor(data: ActorCreatePayload){
     const {films, ...actorData} = data
 
     try {
+
+        const isActorExists = await client.actor.findUnique({
+            where:{
+                name: actorData.name
+            }
+        })
+
+        if (isActorExists) return {status: "error", message: "Actor already exists"}
+
         const actor = await client.actor.create({
             data: actorData
         })
 
+
         const actorsOnFilms = await client.actorsOnFilms.createMany({
             data: films.map((filmId) => {
-                return {filmId:filmId, actorId: actor.id}
+                return {filmId:+filmId, actorId: actor.id}
             })
         })
-
-        return [actor, actorsOnFilms]
+        return {status: "success"}
     } catch (error){
         if (error instanceof PrismaClientKnownRequestError){
             if (error.code == 'P2002'){
@@ -170,20 +183,20 @@ async function updateOneActor(data: ActorUpdatePayload){
     try {
         const actor = await client.actor.update({
             where: {
-                id: actorData.id
+                id: +actorData.id
             },
             data: actorData
         })
 
         await client.actorsOnFilms.deleteMany({
             where: {
-                actorId: actorData.id
+                actorId: +actorData.id
             }
         })
 
         await client.actorsOnFilms.createMany({
             data: films.map((filmId) => {
-                return {filmId:filmId, actorId: actor.id}
+                return {filmId:+filmId, actorId: actor.id}
             })
         })
 
@@ -205,21 +218,46 @@ async function updateOneActor(data: ActorUpdatePayload){
 }
 
 async function deleteOneActor(data: ActorDeletePayload){
-
+    console.log(data)
     try {
-        const actor = await client.actor.delete({
-            where: {
-                id: data.id
-            }
-        })
-
         await client.actorsOnFilms.deleteMany({
             where: {
                 actorId: data.id
             }
         })
 
+        const actor = await client.actor.delete({
+            where: {
+                id: data.id
+            }
+        })
+        console.log(actor)
+
+        
+
         return actor
+    } catch (error){
+        console.log(error)
+        if (error instanceof PrismaClientKnownRequestError){
+            if (error.code == 'P2002'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2015'){
+                console.log(error.message)
+                throw error
+            } else if (error.code == 'P2019'){
+                console.log(error.message)
+                throw error
+            } 
+        }
+    }
+}
+
+
+async function getActorFields(){
+    try{
+        const fields = Prisma.dmmf.datamodel.models.find(model => model.name === "Actor")?.fields
+        return fields
     } catch (error){
         if (error instanceof PrismaClientKnownRequestError){
             if (error.code == 'P2002'){
@@ -243,7 +281,8 @@ const actorsRepository = {
     getActorByIdFull: getActorByIdFull,
     createOneActor: createOneActor,
     updateOneActor: updateOneActor,
-    deleteOneActor: deleteOneActor
+    deleteOneActor: deleteOneActor,
+    getActorFields: getActorFields
 }
 
 export default actorsRepository

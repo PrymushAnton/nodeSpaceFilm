@@ -8,6 +8,8 @@ import genresRouter from './genresApp/genresRouter'
 import actorsRouter from './actorsApp/actorsRouter'
 import directorsRouter from './directorsApp/directorsRouter'
 import adminRouter from './adminApp/adminRouter'
+import reviewRouter from './reviewApp/reviewRouter'
+
 
 
 const app: Express = express()
@@ -28,6 +30,8 @@ app.use('/api/genre/', genresRouter)
 app.use('/api/actor/', actorsRouter)
 app.use('/api/director/', directorsRouter)
 app.use('/api/admin/', adminRouter)
+app.use('/api/review/', reviewRouter)
+
 
 
 app.listen(PORT, HOST, ()=>{

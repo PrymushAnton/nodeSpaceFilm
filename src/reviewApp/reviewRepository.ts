@@ -35,15 +35,15 @@ async function getAllGenres(){
     
 }
 
-async function getGenresNameAndId(){
+async function getReviewsNameAndId(){
     try{
-        const genres = await client.genre.findMany({
+        const reviews = await client.review.findMany({
             select:{
                 id: true,
                 name: true
             }
         })
-        return genres
+        return reviews
     } catch (error){
         if (error instanceof PrismaClientKnownRequestError){
             if (error.code == 'P2002'){
@@ -62,7 +62,7 @@ async function getGenresNameAndId(){
 
 const genresRepository = {
     getAllGenres: getAllGenres,
-    getGenresNameAndId: getGenresNameAndId
+    getReviewsNameAndId: getReviewsNameAndId
 }
 
 export default genresRepository

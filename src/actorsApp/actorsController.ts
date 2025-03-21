@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
 import { ActorCreatePayload, ActorDeletePayload, ActorUpdatePayload } from './types';
-
 import actorsService from "./actorsService";
 
 
@@ -20,7 +19,7 @@ async function getActorById(req: Request, res: Response){
 }
 
 async function getAllNameActors(req: Request, res: Response){
-
+    
     const actors = await actorsService.getAllNameActors()
     res.json(actors)
 
@@ -35,24 +34,34 @@ async function getActorByIdFull(req: Request, res: Response){
 
 async function createOneActor(req: Request, res: Response){
     const data: ActorCreatePayload = req.body
+    // console.log(data)
 
     const actor = await actorsService.createOneActor(data)
     res.json(actor)
 }
 
 async function updateOneActor(req: Request, res: Response){
-    const data = req.body
-    console.log("update",data)
-    // const actor = await actorsService.updateOneActor(data)
+    const data: ActorUpdatePayload = req.body
+    data.id = +data.id
+    data.films = data.films.map(film => +film)
+    const actor = await actorsService.updateOneActor(data)
     res.json({status: "update"})
 }
 
 async function deleteOneActor(req: Request, res: Response){
-    const data = req.body
-    console.log("delete",data)
+    const data: ActorDeletePayload = req.body
+    data.id = +data.id
 
-    // const actor = await actorsService.deleteOneActor(data)
+    const actor = await actorsService.deleteOneActor(data)
     res.json({status: "delete"})
+}
+
+
+
+async function getActorFields(req: Request, res: Response){
+    const fields = await actorsService.getActorFields()
+    res.json(fields)
+
 }
 
 
@@ -63,7 +72,8 @@ const actorsController = {
     getActorByIdFull: getActorByIdFull,
     createOneActor: createOneActor,
     updateOneActor: updateOneActor,
-    deleteOneActor: deleteOneActor
+    deleteOneActor: deleteOneActor,
+    getActorFields: getActorFields
 }
 
 export default actorsController
