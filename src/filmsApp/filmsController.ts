@@ -42,10 +42,14 @@ async function createOneFilm(req: Request, res: Response){
 
 async function updateOneFilm(req: Request, res: Response){
     const data: FilmUpdatePayload = req.body
+
     data.id = +data.id
     data.actors = data.actors.map(actor => +actor)
     data.directors = data.directors.map(director => +director)
     data.genres = data.genres.map(genre => +genre)
+    data.year = +data.year
+    data.rating = +data.rating
+
     const film = await filmsService.updateOneFilm(data)
     res.json({status: "update"})
 }

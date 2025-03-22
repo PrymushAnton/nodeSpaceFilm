@@ -318,7 +318,6 @@ async function getFilmByIdFull(id:number){
                 id: true
             }
         })
-        console.log(film)
         return film
     } catch (error){
         if (error instanceof PrismaClientKnownRequestError){
@@ -410,6 +409,7 @@ async function createOneFilm(data: FilmCreatePayload){
 }
 
 async function updateOneFilm(data: FilmUpdatePayload){
+    console.log(data)
     const {actors, directors, genres, ...filmData} = data
 
     try {
@@ -419,8 +419,6 @@ async function updateOneFilm(data: FilmUpdatePayload){
             },
             data: filmData
         })
-
-
 
         await client.actorsOnFilms.deleteMany({
             where: {
@@ -487,6 +485,24 @@ async function deleteOneFilm(data: FilmDeletePayload){
             }
         })
 
+        await client.directorsOnFilms.deleteMany({
+            where: {
+                filmId: data.id
+            }
+        })
+
+        await client.genresOnFilms.deleteMany({
+            where: {
+                filmId: data.id
+            }
+        })
+
+        await client.review.deleteMany({
+            where: {
+                filmId: data.id
+            }
+        })
+
         const film = await client.film.delete({
             where: {
                 id: data.id
@@ -495,7 +511,6 @@ async function deleteOneFilm(data: FilmDeletePayload){
 
         return film
     } catch (error){
-        console.log(error)
         if (error instanceof PrismaClientKnownRequestError){
             if (error.code == 'P2002'){
                 console.log(error.message)
