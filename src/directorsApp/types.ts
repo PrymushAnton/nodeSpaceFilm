@@ -1,27 +1,27 @@
 import { Prisma } from "@prisma/client";
 
+export type DirectorPayload = Prisma.DirectorGetPayload<{}>
 
-export type DirectorPayload = Prisma.DirectorGetPayload<{}>;
+export type DirectorPayloadWithFilms = Prisma.DirectorGetPayload<{}> & { films: Prisma.FilmGetPayload<{}>[] }
 
-export type DirectorGetPayload = Prisma.DirectorGetPayload<{
-    omit: {
-        id: true;
-    };
-}> & {
-    films: number[];
-};
+export type DirectorNamesPayload = Prisma.DirectorGetPayload<{
+	select: {
+		id: true,
+		name: true
+	}
+}>
 
 export type DirectorCreatePayload = Prisma.DirectorGetPayload<{
-    omit: {
-        id: true;
-    };
+	omit: {
+		id: true;
+	};
 }> & {
-    films: number[];
+	films: number[];
 };
 
 
 export type DirectorUpdatePayload = Prisma.DirectorGetPayload<{}> & {
-    films: number[];
+	films: number[];
 };
 
 

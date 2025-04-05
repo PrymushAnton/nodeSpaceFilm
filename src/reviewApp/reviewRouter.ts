@@ -1,12 +1,17 @@
-import genresController from './reviewController';
+import reviewsController from './reviewController';
 import {Router} from 'express';
 
-const genresRouter = Router();
-
-genresRouter.get("/all", genresController.getAllGenres)
-genresRouter.get("/all/names", genresController.getReviewsNameAndId)
+const reviewsRouter = Router();
 
 
+reviewsRouter.get("/fields", reviewsController.getReviewFields)
+reviewsRouter.get("/all", reviewsController.getAllReviews)
+reviewsRouter.get("/all/names", reviewsController.getAllNameReviews)
+reviewsRouter.get("/full/:id", reviewsController.getReviewByIdFull)
 
 
-export default genresRouter
+reviewsRouter.post("/create", reviewsController.createOneReview)
+reviewsRouter.post("/update", reviewsController.updateOneReview)
+reviewsRouter.post("/delete", reviewsController.deleteOneReview)
+
+export default reviewsRouter

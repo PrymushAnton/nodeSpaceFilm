@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import client from '../client/prismaClient'
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { ActorCreatePayload, ActorDeletePayload, ActorUpdatePayload } from "./types";
+import { ActorCreatePayload, ActorDeletePayload, ActorPayload, ActorUpdatePayload } from "./types";
 
 
 async function getAllActors(){
@@ -9,20 +9,8 @@ async function getAllActors(){
         const actors = await client.actor.findMany()
         return actors
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
-    
 }
 
 
@@ -48,23 +36,15 @@ async function getActorById(id:number){
             })
         })
 
-        return {
-            ...actor,
+        let obj = {
+            ...actor as ActorPayload,
             films: allFilms
         }
+
+        return obj
+
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 
@@ -80,18 +60,7 @@ async function getAllNameActors(){
         )
         return actors
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 
@@ -116,18 +85,7 @@ async function getActorByIdFull(id:number){
 
         return actor
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 
@@ -161,18 +119,7 @@ async function createOneActor(data: ActorCreatePayload){
         })
         return {status: "success"}
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
     
 }
@@ -202,18 +149,7 @@ async function updateOneActor(data: ActorUpdatePayload){
 
         return actor
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 
@@ -237,19 +173,7 @@ async function deleteOneActor(data: ActorDeletePayload){
 
         return actor
     } catch (error){
-        console.log(error)
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 
@@ -259,18 +183,7 @@ async function getActorFields(){
         const fields = Prisma.dmmf.datamodel.models.find(model => model.name === "Actor")?.fields
         return fields
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 

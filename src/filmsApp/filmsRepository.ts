@@ -37,116 +37,51 @@ interface IJsonResponse{
 
 async function getAllFilms(){
     try{
-        let films = await client.film.findMany()
-        let genres = await client.genre.findMany()
-        let genresOnFilms = await client.genresOnFilms.findMany()
-
-
-        let actors = await client.actor.findMany()
-        let actorsOnFilms = await client.actorsOnFilms.findMany()
-
-        let reviews = await client.review.findMany()
-        let users = await client.user.findMany()
-        
-        let jsonResponse: IJsonResponse[] = []
-        
-        
-        films.forEach((film) => {
-
-            let genresOnFilmsTemp = genresOnFilms.filter((pair) => {
-                return film.id == pair.filmId;
-            })
-
-            let genresNames = <string[]>[]
-
-            genresOnFilmsTemp.forEach((pair) => {
-                genres.forEach((genre) => {
-                    if (genre.id == pair.genreId){
-                        genresNames.push(genre.name)
-                    }
-                }) 
-            })
-
-            //
-            let actorsOnFilmsTemp = actorsOnFilms.filter((pair) => {
-                return film.id == pair.filmId;
-            })
-
-            let actorsNames = <string[]>[]
-
-            actorsOnFilmsTemp.forEach((pair) => {
-                actors.forEach((actor) => {
-                    if (actor.id == pair.actorId){
-                        actorsNames.push(actor.name)
-                    }
-                }) 
-            })
-
-
-            
-            //
-            let reviewsTemp = reviews.filter((review) => {
-                return review.filmId == film.id
-            })
-
-            let correctReviews = reviewsTemp.map((review) => {
-                return {
-                    "text": review.text,
-                    "mark": review.mark,
-                    "userId": review.userId
-                }
-            })
-            let finalReviews: any = []
-            correctReviews.forEach((review) => {
-                users.forEach((user) => {
-                    if (user.id === review.userId) {
-                        finalReviews.push({
-                            "text": review.text,
-                            "mark": review.mark,
-                            "user": {
-                                "src": user.src,
-                                "name": user.name
+        const films = await client.film.findMany({
+            include: {
+                reviews: {
+                    select: {
+                        text: true,
+                        mark: true,
+                        user: {
+                            select: {
+                                src: true,
+                                name: true
                             }
-                        })
+                        }
                     }
-                })
-            })
-            
-            jsonResponse.push({
-                "id": film.id,
-                "name": film.name,
-                "src": film.src,
-                "rating": film.rating,
-                "year": film.year,
-                "baseLanguage": film.baseLanguage,
-                "homeCountry": film.homeCountry,
-                "ageRestriction": film.ageRestriction,
-                "description": film.description,
-                "genres": genresNames,
-                "photo1": film.photo1,
-                "photo2": film.photo2,
-                "photo3": film.photo3,
-                "photo4": film.photo4,
-                "actors": actorsNames,
-                "reviews": finalReviews
-            })
+                },
+                genres: {
+                    select: {
+                        genre: {
+                            select: {
+                                name: true
+                            }
+                        }
+                    }
+                },
+                actors: {
+                    select: {
+                        actor:{
+                            select: {
+                                name: true
+                            }
+                        }
+                    }
+                }
+            }
         })
-        
 
-        return jsonResponse
+        const newFilms = films.map(film => ({
+            ...film,
+            genres: film.genres.map(genre => genre.genre.name),
+            actors: film.actors.map(actor => actor.actor.name),
+        }));
+
+        return newFilms
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
+
     }
     
 }
@@ -157,111 +92,51 @@ async function getFilmById(id: number){
         const film = await client.film.findUnique({
             where: {
                 id: id
-            }
-        })
-
-
-        let genresOnFilms = await client.genresOnFilms.findMany({
-            where: {
-                filmId: id
-            }
-        })
-        let genres = await client.genre.findMany({
-            where: {
-                id: {
-                    in: genresOnFilms.map(obj => obj.genreId)
-                }
-
-            }
-        })
-        let genresNames = genres.map(genre => {
-            return genre.name
-        })
-
-
-
-        
-        let actorsOnFilms = await client.actorsOnFilms.findMany({
-            where:{
-                filmId: id
-            }
-        })
-        let actors = await client.actor.findMany({
-            where:{
-                id: {
-                    in: actorsOnFilms.map(obj => obj.actorId)
-                }
-            }
-        })
-        let actorsNames = actors.map(actor => {
-            return actor.name
-        })
-
-        let reviews = await client.review.findMany({
-            where: {
-                filmId: id 
-            }
-        })
-        let users = await client.user.findMany({
-            where: {
-                id: {
-                    in: reviews.map(obj => obj.userId)
-                }
-            }
-        })
-
-        let finalReviews: Object[] = []
-        users.forEach((user) => {
-            reviews.forEach(review => {
-                if (user.id == review.userId) {
-                    finalReviews.push({
-                        text: review.text,
-                        mark: review.mark,
+            },
+            include: {
+                reviews: {
+                    select: {
+                        text: true,
+                        mark: true,
                         user: {
-                            src: user.src,
-                            name: user.name
+                            select: {
+                                src: true,
+                                name: true
+                            }
                         }
-                    })
+                    }
+                },
+                genres: {
+                    select: {
+                        genre: {
+                            select: {
+                                name: true
+                            }
+                        }
+                    }
+                },
+                actors: {
+                    select: {
+                        actor:{
+                            select: {
+                                name: true
+                            }
+                        }
+                    }
                 }
-            })
+            }
         })
-
-
-        let jsonResponse = film && {
-            "id": film.id,
-            "name": film.name,
-            "src": film.src,
-            "rating": film.rating,
-            "year": film.year,
-            "baseLanguage": film.baseLanguage,
-            "homeCountry": film.homeCountry,
-            "ageRestriction": film.ageRestriction,
-            "description": film.description,
-            "genres": genresNames,
-            "photo1": film.photo1,
-            "photo2": film.photo2,
-            "photo3": film.photo3,
-            "photo4": film.photo4,
-            "actors": actorsNames,
-            "reviews": finalReviews
+        if (!film) return film
+        const newFilm = {
+            ...film,
+            genres: film.genres.map(genre => genre.genre.name),
+            actors: film.actors.map(actor => actor.actor.name),
         }
 
-
-        return jsonResponse
+        return newFilm
 
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 

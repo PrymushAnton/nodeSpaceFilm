@@ -1,24 +1,13 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import client from '../client/prismaClient'
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { GenreCreatePayload, GenreUpdatePayload, GenreDeletePayload } from "./types";
+import { UserCreatePayload, UserDeletePayload, UserUpdatePayload } from "./types";
 
 
-interface IJsonResponse{
-    "categories":{
-        "genres": String[]
-    },
-    "src": String,
-    "name": String,
-    "description": String,
-    "rating": Number
-}
-
-
-async function getAllGenres(){
+async function getAllUsers(){
     try{
-        const genres = await client.genre.findMany()
-        return genres
+        const users = await client.user.findMany()
+        return users
     } catch (error){
         if (error instanceof PrismaClientKnownRequestError){
             if (error.code == 'P2002'){
@@ -36,35 +25,9 @@ async function getAllGenres(){
     
 }
 
-async function getGenresNameAndId(){
+async function getAllNameUsers(){
     try{
-        const genres = await client.genre.findMany({
-            select:{
-                id: true,
-                name: true
-            }
-        })
-        return genres
-    } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
-    }
-}
-
-
-async function getAllNameGenres(){
-    try{
-        const genres = await client.genre.findMany(
+        const users = await client.user.findMany(
             {
                 select:{
                     id: true,
@@ -72,7 +35,7 @@ async function getAllNameGenres(){
                 }
             }
         )
-        return genres
+        return users
     } catch (error){
         if (error instanceof PrismaClientKnownRequestError){
             if (error.code == 'P2002'){
@@ -89,25 +52,18 @@ async function getAllNameGenres(){
     }
 }
 
-async function getGenreByIdFull(id:number){
+async function getUserByIdFull(id:number){
     try{
-        const genre = await client.genre.findUnique({
+        const user = await client.user.findUnique({
             where: {
                 id: id
-            },
-            include: {
-                films: {
-                    omit: {
-                        genreId: true
-                    }
-                }
             },
             omit: {
                 id: true
             }
         })
 
-        return genre
+        return user
     } catch (error){
         if (error instanceof PrismaClientKnownRequestError){
             if (error.code == 'P2002'){
@@ -123,32 +79,22 @@ async function getGenreByIdFull(id:number){
         }
     }
 }
-
-
-
-async function createOneGenre(data: GenreCreatePayload){
-    const {films, ...genreData} = data
+async function createOneUser(data: UserCreatePayload){
 
     try {
 
-        const isGenreExists = await client.genre.findUnique({
+        const isUserExists = await client.user.findUnique({
             where:{
-                name: genreData.name
+                name: data.name
             }
         })
 
-        if (isGenreExists) return {status: "error", message: "Genre already exists"}
+        if (isUserExists) return {status: "error", message: "User already exists"}
 
-        const genre = await client.genre.create({
-            data: genreData
+        const user = await client.user.create({
+            data: data
         })
 
-
-        const genresOnFilms = await client.genresOnFilms.createMany({
-            data: films.map((filmId) => {
-                return {filmId:+filmId, genreId: genre.id}
-            })
-        })
         return {status: "success"}
     } catch (error){
         if (error instanceof PrismaClientKnownRequestError){
@@ -167,30 +113,17 @@ async function createOneGenre(data: GenreCreatePayload){
     
 }
 
-async function updateOneGenre(data: GenreUpdatePayload){
-    const {films, ...genreData} = data
+async function updateOneUser(data: UserUpdatePayload){
 
     try {
-        const genre = await client.genre.update({
+        const user = await client.user.update({
             where: {
-                id: +genreData.id
+                id: data.id
             },
-            data: genreData
+            data: data
         })
 
-        await client.genresOnFilms.deleteMany({
-            where: {
-                genreId: +genreData.id
-            }
-        })
-
-        await client.genresOnFilms.createMany({
-            data: films.map((filmId) => {
-                return {filmId:+filmId, genreId: genre.id}
-            })
-        })
-
-        return genre
+        return user
     } catch (error){
         if (error instanceof PrismaClientKnownRequestError){
             if (error.code == 'P2002'){
@@ -207,21 +140,14 @@ async function updateOneGenre(data: GenreUpdatePayload){
     }
 }
 
-async function deleteOneGenre(data: GenreDeletePayload){
+async function deleteOneUser(data: UserDeletePayload){
     try {
-        await client.genresOnFilms.deleteMany({
-            where: {
-                genreId: data.id
-            }
-        })
-
-        const genre = await client.genre.delete({
+        const user = await client.user.delete({
             where: {
                 id: data.id
             }
         })
-
-        return genre
+        return user
     } catch (error){
         console.log(error)
         if (error instanceof PrismaClientKnownRequestError){
@@ -239,9 +165,9 @@ async function deleteOneGenre(data: GenreDeletePayload){
     }
 }
 
-async function getGenreFields(){
+async function getUserFields(){
     try{
-        const fields = Prisma.dmmf.datamodel.models.find(model => model.name === "Genre")?.fields
+        const fields = Prisma.dmmf.datamodel.models.find(model => model.name === "User")?.fields
         return fields
     } catch (error){
         if (error instanceof PrismaClientKnownRequestError){
@@ -260,15 +186,13 @@ async function getGenreFields(){
 }
 
 const genresRepository = {
-    getAllGenres: getAllGenres,
-    getGenresNameAndId: getGenresNameAndId,
-    createOneGenre: createOneGenre,
-    updateOneGenre: updateOneGenre,
-    deleteOneGenre: deleteOneGenre,
-    getAllNameGenres: getAllNameGenres,
-    getGenreByIdFull: getGenreByIdFull,
-    getGenreFields: getGenreFields
-
+    getAllUsers: getAllUsers,
+    getAllNameUsers: getAllNameUsers,
+    getUserByIdFull: getUserByIdFull,
+    createOneUser: createOneUser,
+    deleteOneUser: deleteOneUser,
+    updateOneUser: updateOneUser,
+    getUserFields: getUserFields
 }
 
 export default genresRepository

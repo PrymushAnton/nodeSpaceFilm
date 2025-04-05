@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 import client from '../client/prismaClient'
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { DirectorCreatePayload, DirectorDeletePayload, DirectorUpdatePayload } from "./types";
+import { DirectorCreatePayload, DirectorDeletePayload, DirectorPayload, DirectorUpdatePayload } from "./types";
 
 
 
@@ -10,18 +10,7 @@ async function getAllDirectors(){
         const directors = await client.director.findMany()
         return directors
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
     
 }
@@ -50,22 +39,11 @@ async function getDirectorById(id:number){
         })
 
         return {
-            ...director,
+            ...director as DirectorPayload,
             films: allFilms
         }
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 
@@ -81,18 +59,7 @@ async function getAllNameDirectors(){
         )
         return directors
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 
@@ -117,18 +84,7 @@ async function getDirectorByIdFull(id:number){
 
         return director
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 
@@ -163,18 +119,7 @@ async function createOneDirector(data: DirectorCreatePayload){
         })
         return {status: "success"}
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
     
 }
@@ -204,18 +149,7 @@ async function updateOneDirector(data: DirectorUpdatePayload){
 
         return director
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 
@@ -240,18 +174,7 @@ async function deleteOneDirector(data: DirectorDeletePayload){
         return director
     } catch (error){
         console.log(error)
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 
@@ -261,18 +184,7 @@ async function getDirectorFields(){
         const fields = Prisma.dmmf.datamodel.models.find(model => model.name === "Director")?.fields
         return fields
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 

@@ -1,25 +1,11 @@
-import { Prisma, PrismaClient } from "@prisma/client";
-import client from '../client/prismaClient'
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-
+import { Prisma } from "@prisma/client";
 
 async function getAllModels(){
-
     try{
-        return ["Actor", "Director", "Film", "Genre", "Review", "User"]
+        const models = Prisma.dmmf.datamodel.models.map((model) => {return model.name}).filter((model) => {return !(model.includes("On"))})
+        return models
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 

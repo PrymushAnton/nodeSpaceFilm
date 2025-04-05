@@ -9,6 +9,7 @@ import actorsRouter from './actorsApp/actorsRouter'
 import directorsRouter from './directorsApp/directorsRouter'
 import adminRouter from './adminApp/adminRouter'
 import reviewRouter from './reviewApp/reviewRouter'
+import usersRouter from './userApp/userRouter'
 
 
 
@@ -31,6 +32,8 @@ app.use('/api/actor/', actorsRouter)
 app.use('/api/director/', directorsRouter)
 app.use('/api/admin/', adminRouter)
 app.use('/api/review/', reviewRouter)
+app.use('/api/user/', usersRouter)
+
 
 
 

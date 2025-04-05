@@ -1,6 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import filmsRepository from "../src/filmsApp/filmsRepository";
+import { create } from "ts-node";
 
 const prisma = new PrismaClient();
 
@@ -1076,7 +1077,7 @@ async function createDataBase() {
 				filmId: 2
 			},
 			{
-				name: "Norm",
+				name: "Ok",
 				text: "Solid 6.",
 				mark: 6,
 				userId: 1,
@@ -1085,14 +1086,14 @@ async function createDataBase() {
 
 
 			{
-				name: "Cool",
+				name: "Fine",
 				text: "The greatest film of all times! 10/10",
 				mark: 10,
 				userId: 2,
 				filmId: 2
 			},
 			{
-				name: "Meh",
+				name: "Nah",
 				text: "I didnt like it",
 				mark: 3,
 				userId: 2,
@@ -1150,6 +1151,8 @@ async function getFilmFields(){
 
     return object
 }
+
+
 
 
 createDataBase()

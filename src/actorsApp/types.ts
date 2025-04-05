@@ -1,15 +1,15 @@
 import { Prisma } from "@prisma/client";
 
+export type ActorPayload = Prisma.ActorGetPayload<{}>
 
-export type ActorPayload = Prisma.ActorGetPayload<{}>;
+export type ActorPayloadWithFilms = Prisma.ActorGetPayload<{}> & { films: Prisma.FilmGetPayload<{}>[] }
 
-export type ActorGetPayload = Prisma.ActorGetPayload<{
-	omit: {
-		id: true;
-	};
-}> & {
-	films: number[];
-};
+export type ActorNamesPayload = Prisma.ActorGetPayload<{
+	select: {
+		id: true,
+		name: true
+	}
+}>
 
 export type ActorCreatePayload = Prisma.ActorGetPayload<{
 	omit: {

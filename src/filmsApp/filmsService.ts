@@ -1,17 +1,21 @@
+import { IError, ISuccess } from "../types/types"
 import filmsRepository from "./filmsRepository"
-import { FilmCreatePayload, FilmDeletePayload, FilmUpdatePayload } from "./types"
+import { FilmCreatePayload, FilmDeletePayload, FilmPayloadWithActorsGenresReviews, FilmUpdatePayload } from "./types"
 
 
 
-
-async function getAllFilms(){
+async function getAllFilms(): Promise<ISuccess<FilmPayloadWithActorsGenresReviews[]> | IError>{
     const films = await filmsRepository.getAllFilms()
-    return films
+    if (!films) return {status: "error", message: "There are no films"}
+    if (typeof(films) === "string") return {status: "error", message: "Error while working with prisma"}
+    return {status: "success", data: films}
 }
 
-async function getFilmById(id: number){
+async function getFilmById(id: number): Promise<ISuccess<FilmPayloadWithActorsGenresReviews> | IError>{
     const films = await filmsRepository.getFilmById(id)
-    return films
+    if (!films) return {status: "error", message: "There are no films"}
+    if (typeof(films) === "string") return {status: "error", message: "Error while working with prisma"}
+    return {status: "success", data: films}
 }
 
 

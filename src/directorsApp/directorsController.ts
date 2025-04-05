@@ -34,8 +34,6 @@ async function getDirectorByIdFull(req: Request, res: Response){
 
 async function createOneDirector(req: Request, res: Response){
     const data: DirectorCreatePayload = req.body
-    // console.log(data)
-
     const director = await directorsService.createOneDirector(data)
     res.json(director)
 }
@@ -45,7 +43,7 @@ async function updateOneDirector(req: Request, res: Response){
     data.id = +data.id
     data.films = data.films.map(film => +film)
     const director = await directorsService.updateOneDirector(data)
-    res.json({status: "update"})
+    res.json(director)
 }
 
 async function deleteOneDirector(req: Request, res: Response){
@@ -53,17 +51,14 @@ async function deleteOneDirector(req: Request, res: Response){
     data.id = +data.id
 
     const director = await directorsService.deleteOneDirector(data)
-    res.json({status: "delete"})
+    res.json(director)
 }
-
-
 
 async function getDirectorFields(req: Request, res: Response){
     const fields = await directorsService.getDirectorFields()
     res.json(fields)
 
 }
-
 
 const directorsController = {
     getAllDirectors: getAllDirectors,
