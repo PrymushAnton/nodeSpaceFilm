@@ -1,7 +1,8 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import client from '../client/prismaClient'
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { dir } from "console";
+import { DirectorCreatePayload, DirectorDeletePayload, DirectorPayload, DirectorUpdatePayload } from "./types";
+
 
 
 async function getAllDirectors(){
@@ -9,18 +10,7 @@ async function getAllDirectors(){
         const directors = await client.director.findMany()
         return directors
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
     
 }
@@ -34,7 +24,6 @@ async function getDirectorById(id:number){
                 id: id
             }
         })
-
         let directorsOnFilms = await client.directorsOnFilms.findMany({
             where: {
                 directorId: director?.id
@@ -50,29 +39,159 @@ async function getDirectorById(id:number){
         })
 
         return {
-            ...director,
+            ...director as DirectorPayload,
             films: allFilms
         }
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
+    }
+}
+
+async function getAllNameDirectors(){
+    try{
+        const directors = await client.director.findMany(
+            {
+                select:{
+                    id: true,
+                    name: true
+                }
+            }
+        )
+        return directors
+    } catch (error){
+        return (error as Error).message
+    }
+}
+
+
+async function getDirectorByIdFull(id:number){
+    try{
+        const director = await client.director.findUnique({
+            where: {
+                id: id
+            },
+            include: {
+                films: {
+                    omit: {
+                        directorId: true
+                    }
+                }
+            },
+            omit: {
+                id: true
+            }
+        })
+
+        return director
+    } catch (error){
+        return (error as Error).message
+    }
+}
+
+
+
+
+
+
+async function createOneDirector(data: DirectorCreatePayload){
+    const {films, ...directorData} = data
+
+    try {
+
+        const isDirectorExists = await client.director.findUnique({
+            where:{
+                name: directorData.name
+            }
+        })
+
+        if (isDirectorExists) return null
+
+        const director = await client.director.create({
+            data: directorData
+        })
+
+        const directorsOnFilms = await client.directorsOnFilms.createMany({
+            data: films.map((filmId) => {
+                return {filmId:+filmId, directorId: director.id}
+            })
+        })
+        return [director, directorsOnFilms]
+    } catch (error){
+        return (error as Error).message
     }
     
 }
 
-const directorsRepository = {
-    getAllDirectors: getAllDirectors,
-    getDirectorById: getDirectorById
+async function updateOneDirector(data: DirectorUpdatePayload){
+    const {films, ...directorData} = data
+
+    try {
+        const director = await client.director.update({
+            where: {
+                id: +directorData.id
+            },
+            data: directorData
+        })
+
+        await client.directorsOnFilms.deleteMany({
+            where: {
+                directorId: +directorData.id
+            }
+        })
+
+        const directorsOnFilms = await client.directorsOnFilms.createMany({
+            data: films.map((filmId) => {
+                return {filmId:+filmId, directorId: director.id}
+            })
+        })
+
+        return [director, directorsOnFilms]
+
+    } catch (error){
+        return (error as Error).message
+    }
 }
 
-export default directorsRepository
+async function deleteOneDirector(data: DirectorDeletePayload){
+    try {
+        const directorsOnFilms = await client.directorsOnFilms.deleteMany({
+            where: {
+                directorId: data.id
+            }
+        })
+
+        const director = await client.director.delete({
+            where: {
+                id: data.id
+            }
+        })
+
+        return [director, directorsOnFilms]
+    } catch (error){
+        console.log(error)
+        return (error as Error).message
+    }
+}
+
+
+async function getDirectorFields(){
+    try{
+        const fields = Prisma.dmmf.datamodel.models.find(model => model.name === "Director")?.fields
+        return fields
+    } catch (error){
+        return (error as Error).message
+    }
+}
+
+const directorRepository = {
+    getAllDirectors: getAllDirectors,
+    getDirectorById: getDirectorById,
+    getAllNameDirectors: getAllNameDirectors,
+    getDirectorByIdFull: getDirectorByIdFull,
+    createOneDirector: createOneDirector,
+    updateOneDirector: updateOneDirector,
+    deleteOneDirector: deleteOneDirector,
+    getDirectorFields: getDirectorFields
+}
+
+export default directorRepository

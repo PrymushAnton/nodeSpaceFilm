@@ -1,5 +1,5 @@
-import { Prisma, PrismaClient } from "@prisma/client";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { PrismaClient } from "@prisma/client";
+import userService from "../src/userApp/userService"
 
 const prisma = new PrismaClient();
 
@@ -1026,51 +1026,96 @@ async function createDataBase() {
 	// 	}
 	// })
 
-	
-
-	const user1 = await prisma.user.create({
-		data: {
-			name: "Serj",
-			src: "https://masterpiecer-images.s3.yandex.net/a809a13ba68211eea092b2bae0cf569f:upscaled",
-		}
+	await userService.registerUser({
+		name: "Serj",
+		email: "serj@gmail.com",
+		src: "https://masterpiecer-images.s3.yandex.net/a809a13ba68211eea092b2bae0cf569f:upscaled",
+		password: "serjserj"
 	})
 
-	const user2 = await prisma.user.create({
-		data: {
-			name: "Roman",
-			src: "https://masterpiecer-images.s3.yandex.net/1d9aa8e5833111eea173beb332dff282:upscaled",
-		}
+	await userService.registerUser({
+		name: "Roman",
+		email: "roman@gmail.com",
+		src: "https://masterpiecer-images.s3.yandex.net/1d9aa8e5833111eea173beb332dff282:upscaled",
+		password: "romanroman"
 	})
 
-	const user3 = await prisma.user.create({
-		data: {
-			name: "SeRo",
-			src: "https://masterpiecer-images.s3.yandex.net/bb429de19eed11eea139b646b2a0ffc1:upscaled",
-		}
+	await userService.registerUser({
+		name: "SeRo",
+		email: "sero@gmail.com",
+		src: "https://masterpiecer-images.s3.yandex.net/bb429de19eed11eea139b646b2a0ffc1:upscaled",
+		password: "serosero"
 	})
 
+	await userService.registerUser({
+		name: "Tony",
+		email: "tony@gmail.com",
+		password: "12341234",
+		role: "admin"
+	})
+
+	// const user1 = await prisma.user.create({
+	// 	data: {
+	// 		name: "Serj",
+	// 		email: "serj@gmail.com",
+	// 		src: "https://masterpiecer-images.s3.yandex.net/a809a13ba68211eea092b2bae0cf569f:upscaled",
+	// 		password: "asasddasd"
+	// 	}
+	// })
+
+	// const user2 = await prisma.user.create({
+	// 	data: {
+	// 		name: "Roman",
+	// 		email: "roman@gmail.com",
+	// 		src: "https://masterpiecer-images.s3.yandex.net/1d9aa8e5833111eea173beb332dff282:upscaled",
+	// 		password: "asasddasd"
+
+	// 	}
+	// })
+
+	// const user3 = await prisma.user.create({
+	// 	data: {
+	// 		name: "SeRo",
+	// 		email: "sero@gmail.com",
+	// 		src: "https://masterpiecer-images.s3.yandex.net/bb429de19eed11eea139b646b2a0ffc1:upscaled",
+	// 		password: "asasddasd"
+	// 	}
+	// })
+
+	// const user4 = await prisma.user.create({
+	// 	data: {
+	// 		name: "Tony",
+	// 		email: "tony@gmail.com",
+	// 		password: "asasddasd",
+	// 		role: "admin"
+	// 	}
+	// })	
 
 	const reviews = await prisma.review.createMany({
 		data: [
 			{
+				name: "Cool",
 				text: "The best film I have ever seen!",
 				mark: 10,
 				userId: 1,
 				filmId: 1
 			},
 			{
+				name: "Norm",
 				text: "I have changed my mind: this film is quite mediocre.",
 				mark: 6,
 				userId: 1,
 				filmId: 1
 			},
 			{
+				name: "Meh",
 				text: "Characters in this film are not playing great, I do not recommend this film.",
 				mark: 4,
 				userId: 1,
 				filmId: 2
 			},
 			{
+				name: "Ok",
 				text: "Solid 6.",
 				mark: 6,
 				userId: 1,
@@ -1079,12 +1124,14 @@ async function createDataBase() {
 
 
 			{
+				name: "Fine",
 				text: "The greatest film of all times! 10/10",
 				mark: 10,
 				userId: 2,
 				filmId: 2
 			},
 			{
+				name: "Nah",
 				text: "I didnt like it",
 				mark: 3,
 				userId: 2,
@@ -1093,6 +1140,7 @@ async function createDataBase() {
 
 
 			{
+				name: "So-so",
 				text: "I am not satisfied after watching this film.",
 				mark: 5,
 				userId: 3,
@@ -1101,7 +1149,6 @@ async function createDataBase() {
 		]
 	})
 }
-
 
 
 createDataBase()

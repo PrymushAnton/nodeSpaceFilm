@@ -1,6 +1,10 @@
 model User {
-  id     Int      @id @default(autoincrement())
-  src    String
-  name   String   @unique
-  review Review[]
+  id       Int    @id @default(autoincrement())
+  name     String @unique
+  email    String @unique
+  src      String @default("https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vecteezy.com%2Ffree-vector%2Fanonymous-avatar&psig=AOvVaw0C2MLtISZgUxAPII1oISCG&ust=1744005156327000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCMCZjNDbwowDFQAAAAAdAAAAABAE")
+  password String
+  role     String @default("user")
+
+  reviews Review[]
 }

@@ -7,6 +7,10 @@ import filmsRouter from './filmsApp/filmsRouter'
 import genresRouter from './genresApp/genresRouter'
 import actorsRouter from './actorsApp/actorsRouter'
 import directorsRouter from './directorsApp/directorsRouter'
+import adminRouter from './adminApp/adminRouter'
+import reviewRouter from './reviewApp/reviewRouter'
+import usersRouter from './userApp/userRouter'
+
 
 
 const app: Express = express()
@@ -14,24 +18,25 @@ const PORT = 3001
 const HOST = 'localhost'
 
 
+app.use(cors({
+    origin: ['http://localhost:3000']
+}))
+
 app.set('views', join(__dirname, 'templates'))
 app.use('/static/', express.static(join(__dirname, 'static')))
-app.use(cors())
-// app.set("view engine", 'ejs')
+app.use(express.json())
 
-app.use('/film/', filmsRouter)
-app.use('/genre/', genresRouter)
-app.use('/actor/', actorsRouter)
-app.use('/director/', directorsRouter)
+app.use('/api/film/', filmsRouter)
+app.use('/api/genre/', genresRouter)
+app.use('/api/actor/', actorsRouter)
+app.use('/api/director/', directorsRouter)
+app.use('/api/admin/', adminRouter)
+app.use('/api/review/', reviewRouter)
+app.use('/api/user/', usersRouter)
 
-
-
-// app.get('/', (req:Request, res: Response) => {
-//     res.render('home')
-// })
 
 
 
 app.listen(PORT, HOST, ()=>{
-    console.log(`http://localhost:${PORT}`)
+    console.log(`http://${HOST}:${PORT}`)
 })
