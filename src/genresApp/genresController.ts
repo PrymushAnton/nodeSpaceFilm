@@ -16,11 +16,6 @@ async function getGenresNameAndId(req: Request, res: Response){
 }
 
 
-async function getAllNameGenres(req: Request, res: Response){
-    const genres = await genresService.getAllNameGenres()
-    res.json(genres)
-}
-
 async function getGenreByIdFull(req: Request, res: Response){
     const id = +req.params.id
 
@@ -64,7 +59,6 @@ const genresController = {
     updateOneGenre: updateOneGenre,
     deleteOneGenre: deleteOneGenre,
     getGenreFields: getGenreFields,
-    getAllNameGenres: getAllNameGenres
 }
 
 export default genresController

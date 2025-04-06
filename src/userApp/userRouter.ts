@@ -1,8 +1,20 @@
+import { authTokenMiddleware } from '../middlewares/authTokenMiddleware';
+import { checkRoleMiddleware } from '../middlewares/checkRoleMiddleware';
 import usersController from './userController';
 import {Router} from 'express';
 
 const usersRouter = Router();
 
+usersRouter.post('/login', usersController.authUser)
+usersRouter.post('/register', usersController.registerUser)
+
+usersRouter.get("/me", authTokenMiddleware, usersController.getUserById)
+
+
+
+
+usersRouter.use(authTokenMiddleware)
+usersRouter.use(checkRoleMiddleware)
 
 usersRouter.get("/fields", usersController.getUserFields)
 usersRouter.get("/all", usersController.getAllUsers)

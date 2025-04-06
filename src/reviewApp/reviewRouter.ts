@@ -1,8 +1,12 @@
+import { authTokenMiddleware } from '../middlewares/authTokenMiddleware';
+import { checkRoleMiddleware } from '../middlewares/checkRoleMiddleware';
 import reviewsController from './reviewController';
 import {Router} from 'express';
 
 const reviewsRouter = Router();
 
+reviewsRouter.use(authTokenMiddleware)
+reviewsRouter.use(checkRoleMiddleware)
 
 reviewsRouter.get("/fields", reviewsController.getReviewFields)
 reviewsRouter.get("/all", reviewsController.getAllReviews)

@@ -7,10 +7,8 @@ async function getAllActors(): Promise<ISuccess<ActorPayload[]> | IError>{
     const actors = await actorsRepository.getAllActors()
 
     if (!actors) return {status: "error", message: "There are no actors"}
-
     if (typeof(actors) === "string") return {status: "error", message: "Error while working with prisma"}
     
-
     return {status: "success", data: actors}
 }
 
@@ -18,7 +16,6 @@ async function getActorById(id: number): Promise<ISuccess<ActorPayloadWithFilms>
     const actor = await actorsRepository.getActorById(id)
 
     if (!actor) return {status: "error", message: "There is no actor with such id"}
-
     if (typeof(actor) === "string") return {status: "error", message: "Error while working with prisma"}
 
     return {status: "success", data: actor}
@@ -74,8 +71,15 @@ async function getActorByIdFull(id: number): Promise<ISuccess<any> | IError>{
 async function createOneActor(data: ActorCreatePayload): Promise<ISuccess<string> | IError>{
     const actor = await actorsRepository.createOneActor(data)
 
-    if (!actor) return {status: "error", message: "Error while creating actor"}
     if (typeof(actor) === "string") return {status: "error", message: "Error while working with prisma"}
+
+    if (Array.isArray(actor)){
+        for (const el of actor) {
+            if (!el) {
+                return {status: "error", message: "Error while creating actor"}
+            }
+        }
+    }
 
     return {status: "success", data: "Actor was created successfully"}
 }
@@ -83,8 +87,15 @@ async function createOneActor(data: ActorCreatePayload): Promise<ISuccess<string
 async function updateOneActor(data: ActorUpdatePayload): Promise<ISuccess<string> | IError>{
     const actor = await actorsRepository.updateOneActor(data)
 
-    if (!actor) return {status: "error", message: "Error while updating actor"}
     if (typeof(actor) === "string") return {status: "error", message: "Error while working with prisma"}
+
+    if (Array.isArray(actor)){
+        for (const el of actor) {
+            if (!el) {
+                return {status: "error", message: "Error while updating actor"}
+            }
+        }
+    }
 
     return {status: "success", data: "Actor was updated successfully"}
 }
@@ -92,8 +103,15 @@ async function updateOneActor(data: ActorUpdatePayload): Promise<ISuccess<string
 async function deleteOneActor(data: ActorDeletePayload): Promise<ISuccess<string> | IError>{
     const actor = await actorsRepository.deleteOneActor(data)
 
-    if (!actor) return {status: "error", message: "Error while deleting actor"}
     if (typeof(actor) === "string") return {status: "error", message: "Error while working with prisma"}
+
+    if (Array.isArray(actor)){
+        for (const el of actor) {
+            if (!el) {
+                return {status: "error", message: "Error while deleting actor"}
+            }
+        }
+    }
 
     return {status: "success", data: "Actor was deleted successfully"}
 }

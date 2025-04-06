@@ -1,7 +1,13 @@
+import { authTokenMiddleware } from '../middlewares/authTokenMiddleware';
+import { checkRoleMiddleware } from '../middlewares/checkRoleMiddleware';
 import directorsController from './directorsController';
 import {Router} from 'express';
 
 const directorsRouter = Router();
+
+
+directorsRouter.use(authTokenMiddleware)
+directorsRouter.use(checkRoleMiddleware)
 
 directorsRouter.get("/fields", directorsController.getDirectorFields)
 directorsRouter.get("/all", directorsController.getAllDirectors)

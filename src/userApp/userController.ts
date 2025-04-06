@@ -48,6 +48,28 @@ async function getUserFields(req: Request, res: Response){
 }
 
 
+async function authUser(req: Request, res: Response){
+    const data = req.body
+    const result = await usersService.authUser(data.email, data.password)
+    
+    res.json(result)
+}
+
+async function registerUser(req: Request, res: Response){
+    const data = req.body
+    const result = await usersService.registerUser(data)
+
+    res.json(result)
+}
+
+async function getUserById(req: Request, res: Response){
+    const id = res.locals.userId
+    const result = await usersService.getUserById(id)
+
+    res.json(result)
+}
+
+
 const usersController = {
     getAllUsers: getAllUsers,
     getAllNameUsers: getAllNameUsers,
@@ -55,7 +77,10 @@ const usersController = {
     createOneUser: createOneUser,
     updateOneUser: updateOneUser,
     deleteOneUser: deleteOneUser,
-    getUserFields: getUserFields
+    getUserFields: getUserFields,
+    authUser: authUser,
+    registerUser: registerUser,
+    getUserById: getUserById
 }
 
 export default usersController

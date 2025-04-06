@@ -75,26 +75,50 @@ async function getDirectorByIdFull(id: number): Promise<ISuccess<any> | IError>{
 
 async function createOneDirector(data: DirectorCreatePayload): Promise<ISuccess<string> | IError>{
     const director = await directorsRepository.createOneDirector(data)
-    if (!director) return {status: "error", message: "Error while creating director"}
+
     if (typeof(director) === "string") return {status: "error", message: "Error while working with prisma"}
+
+    if (Array.isArray(director)){
+        for (const el of director) {
+            if (!el) {
+                return {status: "error", message: "Error while creating director"}
+            }
+        }
+    }
     
     return {status: "success", data: "Director was created successfully"}
 }
 
 async function updateOneDirector(data: DirectorUpdatePayload){
     const director = await directorsRepository.updateOneDirector(data)
-    if (!director) return {status: "error", message: "Error while updating director"}
+
     if (typeof(director) === "string") return {status: "error", message: "Error while working with prisma"}
+
+    if (Array.isArray(director)){
+        for (const el of director) {
+            if (!el) {
+                return {status: "error", message: "Error while updating director"}
+            }
+        }
+    }
     return {status: "success", data: "Director was updated successfully"}
 }
 
 async function deleteOneDirector(data: DirectorDeletePayload){
 
     const director = await directorsRepository.deleteOneDirector(data)
-    if (!director) return {status: "error", message: "Error while deleting director"}
-    if (typeof(director) === "string") return {status: "error", message: "Error while working with prisma"}
-    return {status: "success", data: "Director was deleted successfully"}
 
+    if (typeof(director) === "string") return {status: "error", message: "Error while working with prisma"}
+
+    if (Array.isArray(director)){
+        for (const el of director) {
+            if (!el) {
+                return {status: "error", message: "Error while deleting director"}
+            }
+        }
+    }
+
+    return {status: "success", data: "Director was deleted successfully"}
 }
 
 

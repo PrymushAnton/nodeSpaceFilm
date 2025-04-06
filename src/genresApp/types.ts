@@ -3,13 +3,13 @@ import { Prisma } from "@prisma/client";
 
 export type GenrePayload = Prisma.GenreGetPayload<{}>;
 
-export type GenreGetPayload = Prisma.GenreGetPayload<{
-    omit: {
-        id: true;
-    };
-}> & {
-    films: number[];
-};
+export type GenreNamesPayload = Prisma.GenreGetPayload<{
+    select:{
+        id: true,
+        name: true
+    }
+}>;
+
 
 export type GenreCreatePayload = Prisma.GenreGetPayload<{
     omit: {

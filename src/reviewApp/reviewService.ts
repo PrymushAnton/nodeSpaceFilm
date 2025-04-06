@@ -1,25 +1,34 @@
 import reviewsRepository from "./reviewRepository"
-import { ReviewCreatePayload, ReviewDeletePayload, ReviewUpdatePayload } from "./types"
+import { ReviewCreatePayload, ReviewDeletePayload, ReviewPayload, ReviewUpdatePayload, ReviewNamesPayload } from "./types"
+import { ISuccess, IError } from "../types/types"
 
 
 
-
-async function getAllReviews(){
+async function getAllReviews(): Promise<ISuccess<ReviewPayload[]> | IError>{
     const reviews = await reviewsRepository.getAllReviews()
-    return reviews
+
+    if (!reviews) return {status: "error", message: "There are no reviews"}
+    if (typeof(reviews) === "string") return {status: "error", message: "Error while working with prisma"}
+
+    return {status: "success", data: reviews}
 }
 
 
-async function getAllNameReviews(){
+async function getAllNameReviews(): Promise<ISuccess<ReviewNamesPayload[]> | IError>{
     const reviews = await reviewsRepository.getAllNameReviews()
-    return reviews
+
+    if (!reviews) return {status: "error", message: "Error while getting reviews names"}
+    if (typeof(reviews) === "string") return {status: "error", message: "Error while working with prisma"}
+
+    return {status: "success", data: reviews}
 }
 
 
-async function getReviewByIdFull(id: number){
+async function getReviewByIdFull(id: number): Promise<ISuccess<any> | IError>{
     const review = await reviewsRepository.getReviewByIdFull(id)
 
-    if (!review) return {error: "error"}
+    if (!review) return {status: "error", message: "Error while getting full review by id"}
+    if (typeof(review) === "string") return {status: "error", message: "Error while working with prisma"}
     
     const {filmId, userId, text, ...reviewData} = review
     
@@ -54,29 +63,43 @@ async function getReviewByIdFull(id: number){
 			}
 		))
 	}
-    return reviewObjNew
+    return {status: "success", data: reviewObjNew}
+
 }
 
-async function createOneReview(data: ReviewCreatePayload){
+async function createOneReview(data: ReviewCreatePayload): Promise<ISuccess<string> | IError>{
     const review = await reviewsRepository.createOneReview(data)
-    return review
+
+    if (!review) return {status: "error", message: "Error while creating review"}
+    if (typeof(review) === "string") return {status: "error", message: "Error while working with prisma"}
+
+    return {status: "success", data: "Review was created successfully"}
 }
 
-async function updateOneReview(data: ReviewUpdatePayload){
+async function updateOneReview(data: ReviewUpdatePayload): Promise<ISuccess<string> | IError>{
     const review = await reviewsRepository.updateOneReview(data)
-    console.log(review)
 
-    return review
+    if (!review) return {status: "error", message: "Error while updating review"}
+    if (typeof(review) === "string") return {status: "error", message: "Error while working with prisma"}
+
+    return {status: "success", data: "Review was updated successfully"}
 }
 
-async function deleteOneReview(data: ReviewDeletePayload){
+async function deleteOneReview(data: ReviewDeletePayload): Promise<ISuccess<string> | IError>{
     const review = await reviewsRepository.deleteOneReview(data)
-    return review
+
+    if (!review) return {status: "error", message: "Error while deleting review"}
+    if (typeof(review) === "string") return {status: "error", message: "Error while working with prisma"}
+
+    return {status: "success", data: "Review was deleted successfully"}
 }
 
 
-async function getReviewFields(){
+async function getReviewFields(): Promise<ISuccess<any> | IError>{
     const fields = await reviewsRepository.getReviewFields()
+
+    if (!fields) return {status: "error", message: "Error while getting review fields"}
+    if (typeof(fields) === "string") return {status: "error", message: "Error while working with prisma"}
 
     interface LooseObject {
         [key: string]: any
@@ -104,7 +127,7 @@ async function getReviewFields(){
         }
     })
 
-    return object
+    return {status: "success", data: object}
 }
 const genresService = {
     getAllReviews: getAllReviews,

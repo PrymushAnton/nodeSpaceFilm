@@ -3,13 +3,12 @@ import { Prisma } from "@prisma/client";
 
 export type ReviewPayload = Prisma.ReviewGetPayload<{}>;
 
-export type ReviewGetPayload = Prisma.ReviewGetPayload<{
-    omit: {
-        id: true;
-    };
-}> & {
-    filmId: number;
-};
+export type ReviewNamesPayload = Prisma.ReviewGetPayload<{
+	select: {
+		id: true,
+		name: true
+	}
+}>
 
 export type ReviewCreatePayload = Prisma.ReviewGetPayload<{
     omit: {

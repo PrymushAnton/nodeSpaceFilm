@@ -20,20 +20,8 @@ async function getAllGenres(){
         const genres = await client.genre.findMany()
         return genres
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
-    
 }
 
 async function getGenresNameAndId(){
@@ -46,48 +34,11 @@ async function getGenresNameAndId(){
         })
         return genres
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 
 
-async function getAllNameGenres(){
-    try{
-        const genres = await client.genre.findMany(
-            {
-                select:{
-                    id: true,
-                    name: true
-                }
-            }
-        )
-        return genres
-    } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
-    }
-}
 
 async function getGenreByIdFull(id:number){
     try{
@@ -109,18 +60,7 @@ async function getGenreByIdFull(id:number){
 
         return genre
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 
@@ -149,20 +89,9 @@ async function createOneGenre(data: GenreCreatePayload){
                 return {filmId:+filmId, genreId: genre.id}
             })
         })
-        return {status: "success"}
+        return [genre, genresOnFilms]
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
     
 }
@@ -184,32 +113,21 @@ async function updateOneGenre(data: GenreUpdatePayload){
             }
         })
 
-        await client.genresOnFilms.createMany({
+        const genresOnFilms = await client.genresOnFilms.createMany({
             data: films.map((filmId) => {
                 return {filmId:+filmId, genreId: genre.id}
             })
         })
 
-        return genre
+        return [genre, genresOnFilms]
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 
 async function deleteOneGenre(data: GenreDeletePayload){
     try {
-        await client.genresOnFilms.deleteMany({
+        const genresOnFilms = await client.genresOnFilms.deleteMany({
             where: {
                 genreId: data.id
             }
@@ -221,21 +139,9 @@ async function deleteOneGenre(data: GenreDeletePayload){
             }
         })
 
-        return genre
+        return [genre, genresOnFilms]
     } catch (error){
-        console.log(error)
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 
@@ -244,18 +150,7 @@ async function getGenreFields(){
         const fields = Prisma.dmmf.datamodel.models.find(model => model.name === "Genre")?.fields
         return fields
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 
@@ -265,10 +160,8 @@ const genresRepository = {
     createOneGenre: createOneGenre,
     updateOneGenre: updateOneGenre,
     deleteOneGenre: deleteOneGenre,
-    getAllNameGenres: getAllNameGenres,
     getGenreByIdFull: getGenreByIdFull,
     getGenreFields: getGenreFields
-
 }
 
 export default genresRepository

@@ -1,7 +1,5 @@
-import { Prisma, PrismaClient } from "@prisma/client";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import filmsRepository from "../src/filmsApp/filmsRepository";
-import { create } from "ts-node";
+import { PrismaClient } from "@prisma/client";
+import userService from "../src/userApp/userService"
 
 const prisma = new PrismaClient();
 
@@ -1028,30 +1026,70 @@ async function createDataBase() {
 	// 	}
 	// })
 
-	
-
-	const user1 = await prisma.user.create({
-		data: {
-			name: "Serj",
-			src: "https://masterpiecer-images.s3.yandex.net/a809a13ba68211eea092b2bae0cf569f:upscaled",
-		}
+	await userService.registerUser({
+		name: "Serj",
+		email: "serj@gmail.com",
+		src: "https://masterpiecer-images.s3.yandex.net/a809a13ba68211eea092b2bae0cf569f:upscaled",
+		password: "serjserj"
 	})
 
-	const user2 = await prisma.user.create({
-		data: {
-			name: "Roman",
-			src: "https://masterpiecer-images.s3.yandex.net/1d9aa8e5833111eea173beb332dff282:upscaled",
-		}
+	await userService.registerUser({
+		name: "Roman",
+		email: "roman@gmail.com",
+		src: "https://masterpiecer-images.s3.yandex.net/1d9aa8e5833111eea173beb332dff282:upscaled",
+		password: "romanroman"
 	})
 
-	const user3 = await prisma.user.create({
-		data: {
-			name: "SeRo",
-			src: "https://masterpiecer-images.s3.yandex.net/bb429de19eed11eea139b646b2a0ffc1:upscaled",
-		}
+	await userService.registerUser({
+		name: "SeRo",
+		email: "sero@gmail.com",
+		src: "https://masterpiecer-images.s3.yandex.net/bb429de19eed11eea139b646b2a0ffc1:upscaled",
+		password: "serosero"
 	})
 
-	
+	await userService.registerUser({
+		name: "Tony",
+		email: "tony@gmail.com",
+		password: "12341234",
+		role: "admin"
+	})
+
+	// const user1 = await prisma.user.create({
+	// 	data: {
+	// 		name: "Serj",
+	// 		email: "serj@gmail.com",
+	// 		src: "https://masterpiecer-images.s3.yandex.net/a809a13ba68211eea092b2bae0cf569f:upscaled",
+	// 		password: "asasddasd"
+	// 	}
+	// })
+
+	// const user2 = await prisma.user.create({
+	// 	data: {
+	// 		name: "Roman",
+	// 		email: "roman@gmail.com",
+	// 		src: "https://masterpiecer-images.s3.yandex.net/1d9aa8e5833111eea173beb332dff282:upscaled",
+	// 		password: "asasddasd"
+
+	// 	}
+	// })
+
+	// const user3 = await prisma.user.create({
+	// 	data: {
+	// 		name: "SeRo",
+	// 		email: "sero@gmail.com",
+	// 		src: "https://masterpiecer-images.s3.yandex.net/bb429de19eed11eea139b646b2a0ffc1:upscaled",
+	// 		password: "asasddasd"
+	// 	}
+	// })
+
+	// const user4 = await prisma.user.create({
+	// 	data: {
+	// 		name: "Tony",
+	// 		email: "tony@gmail.com",
+	// 		password: "asasddasd",
+	// 		role: "admin"
+	// 	}
+	// })	
 
 	const reviews = await prisma.review.createMany({
 		data: [
@@ -1111,48 +1149,6 @@ async function createDataBase() {
 		]
 	})
 }
-
-
-
-
-async function getFilmFields(){
-    const fields = await filmsRepository.getFilmFields()
-
-    interface LooseObject {
-        [key: string]: any
-    }
-    const object: LooseObject = {}
-    
-    fields?.forEach(field => {
-        if (field.name === "id") return
-
-		object[field.name] = {
-            type: field.type === "GenresOnFilms" || field.type === "ActorsOnFilms" || field.type === "DirectorsOnFilms"
-                ? "manytomany"
-                : field.type === "Review"
-                    ? "onetomany"
-                    : field.type === "Int" 
-                        ? "number" 
-                        : field.type === "String"
-                            ? "text"
-                            : field.type.toLowerCase(),
-            data: field.type === "GenresOnFilms" || field.type === "ActorsOnFilms" || field.type === "DirectorsOnFilms" || field.type === "Review"
-                ? [] as number[]
-                : field.type === "Int" 
-                    ? 0
-                    : ""
-        }
-
-        
-    })
-
-    console.log(object)
-
-
-    return object
-}
-
-
 
 
 createDataBase()

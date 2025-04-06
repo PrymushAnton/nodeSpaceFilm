@@ -105,19 +105,18 @@ async function createOneActor(data: ActorCreatePayload){
             }
         })
 
-        if (isActorExists) return {status: "error", message: "Actor already exists"}
+        if (isActorExists) return null
 
         const actor = await client.actor.create({
             data: actorData
         })
-
 
         const actorsOnFilms = await client.actorsOnFilms.createMany({
             data: films.map((filmId) => {
                 return {filmId:+filmId, actorId: actor.id}
             })
         })
-        return {status: "success"}
+        return [actor, actorsOnFilms]
     } catch (error){
         return (error as Error).message
     }
@@ -141,22 +140,21 @@ async function updateOneActor(data: ActorUpdatePayload){
             }
         })
 
-        await client.actorsOnFilms.createMany({
+        const actorsOnFilms = await client.actorsOnFilms.createMany({
             data: films.map((filmId) => {
                 return {filmId:+filmId, actorId: actor.id}
             })
         })
 
-        return actor
+        return [actor, actorsOnFilms]
     } catch (error){
         return (error as Error).message
     }
 }
 
 async function deleteOneActor(data: ActorDeletePayload){
-    console.log(data)
     try {
-        await client.actorsOnFilms.deleteMany({
+        const actorsOnFilms = await client.actorsOnFilms.deleteMany({
             where: {
                 actorId: data.id
             }
@@ -167,11 +165,8 @@ async function deleteOneActor(data: ActorDeletePayload){
                 id: data.id
             }
         })
-        console.log(actor)
 
-        
-
-        return actor
+        return [actor, actorsOnFilms]
     } catch (error){
         return (error as Error).message
     }

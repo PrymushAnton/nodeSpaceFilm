@@ -104,20 +104,18 @@ async function createOneDirector(data: DirectorCreatePayload){
             }
         })
 
-        if (isDirectorExists) return {status: "error", message: "Director already exists"}
+        if (isDirectorExists) return null
 
         const director = await client.director.create({
             data: directorData
         })
-
-        console.log("repos", director)
 
         const directorsOnFilms = await client.directorsOnFilms.createMany({
             data: films.map((filmId) => {
                 return {filmId:+filmId, directorId: director.id}
             })
         })
-        return {status: "success"}
+        return [director, directorsOnFilms]
     } catch (error){
         return (error as Error).message
     }
@@ -141,22 +139,22 @@ async function updateOneDirector(data: DirectorUpdatePayload){
             }
         })
 
-        await client.directorsOnFilms.createMany({
+        const directorsOnFilms = await client.directorsOnFilms.createMany({
             data: films.map((filmId) => {
                 return {filmId:+filmId, directorId: director.id}
             })
         })
 
-        return director
+        return [director, directorsOnFilms]
+
     } catch (error){
         return (error as Error).message
     }
 }
 
 async function deleteOneDirector(data: DirectorDeletePayload){
-    console.log(data)
     try {
-        await client.directorsOnFilms.deleteMany({
+        const directorsOnFilms = await client.directorsOnFilms.deleteMany({
             where: {
                 directorId: data.id
             }
@@ -167,11 +165,8 @@ async function deleteOneDirector(data: DirectorDeletePayload){
                 id: data.id
             }
         })
-        console.log(director)
 
-        
-
-        return director
+        return [director, directorsOnFilms]
     } catch (error){
         console.log(error)
         return (error as Error).message

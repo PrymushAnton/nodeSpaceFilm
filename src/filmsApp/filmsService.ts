@@ -1,6 +1,6 @@
 import { IError, ISuccess } from "../types/types"
 import filmsRepository from "./filmsRepository"
-import { FilmCreatePayload, FilmDeletePayload, FilmPayloadWithActorsGenresReviews, FilmUpdatePayload } from "./types"
+import { FilmNamesPayload, FilmCreatePayload, FilmDeletePayload, FilmPayloadWithActorsGenresReviews, FilmUpdatePayload } from "./types"
 
 
 
@@ -18,18 +18,24 @@ async function getFilmById(id: number): Promise<ISuccess<FilmPayloadWithActorsGe
     return {status: "success", data: films}
 }
 
-
-async function getFilmsNameAndId(){
+async function getFilmsNameAndId(): Promise<ISuccess<FilmNamesPayload[]> | IError>{
     const films = await filmsRepository.getFilmsNameAndId()
-    const newFilms = films?.map(film => {return {id: String(film.id), name: film.name}})
-    return newFilms
+
+    if (!films) return {status: "error", message: "Error while getting films names"}
+    if (typeof(films) === "string") return {status: "error", message: "Error while working with prisma"}
+
+    // String(film.id)
+    const newFilms = films?.map(film => {return {id: film.id, name: film.name}})
+    return {status: "success", data: newFilms}
+
 }
 
 
-async function getFilmByIdFull(id: number){
+async function getFilmByIdFull(id: number): Promise<ISuccess<any> | IError>{
     const film = await filmsRepository.getFilmByIdFull(id)
 
-    if (!film) return {error: "error"}
+    if (!film) return {status: "error", message: "Error while getting full film by id"}
+    if (typeof(film) === "string") return {status: "error", message: "Error while working with prisma"}
     
     const modifiedFilm = {
         ...film,
@@ -74,14 +80,16 @@ async function getFilmByIdFull(id: number){
         }
     }
 
-    return filmObj
+    return {status: "success", data: filmObj}
+
 }
 
 
-
-
-async function getFilmFields(){
+async function getFilmFields(): Promise<ISuccess<any> | IError>{
     const fields = await filmsRepository.getFilmFields()
+
+    if (!fields) return {status: "error", message: "Error while getting film fields"}
+    if (typeof(fields) === "string") return {status: "error", message: "Error while working with prisma"}
 
     interface LooseObject {
         [key: string]: any
@@ -108,23 +116,45 @@ async function getFilmFields(){
         
     })
 
-    return object
+    return {status: "success", data: object}
+
 }
 
 
-async function createOneFilm(data: FilmCreatePayload){
+async function createOneFilm(data: FilmCreatePayload): Promise<ISuccess<string> | IError>{
     const film = await filmsRepository.createOneFilm(data)
-    return film
+
+    if (typeof(film) === "string") return {status: "error", message: "Error while working with prisma"}
+
+    if (!film) return {status: "error", message: "Error while creating film"}
+    if (Array.isArray(film)){
+        for (const el of film) {
+            if (!el) {
+                return {status: "error", message: "Error while creating film2"}
+            }
+        }
+    }
+
+
+    return {status: "success", data: "Actor was created successfully"}
 }
 
-async function updateOneFilm(data: FilmUpdatePayload){
+async function updateOneFilm(data: FilmUpdatePayload): Promise<ISuccess<string> | IError>{
     const film = await filmsRepository.updateOneFilm(data)
-    return film
+    
+    if (!film) return {status: "error", message: "Error while updating film"}
+    if (typeof(film) === "string") return {status: "error", message: "Error while working with prisma"}
+    
+    return {status: "success", data: "Actor was updated successfully"}
 }
 
-async function deleteOneFilm(data: FilmDeletePayload){
+async function deleteOneFilm(data: FilmDeletePayload): Promise<ISuccess<string> | IError>{
     const film = await filmsRepository.deleteOneFilm(data)
-    return film
+
+    if (!film) return {status: "error", message: "Error while deleting film"}
+    if (typeof(film) === "string") return {status: "error", message: "Error while working with prisma"}
+
+    return {status: "success", data: "Actor was deleted successfully"}
 }
 
 

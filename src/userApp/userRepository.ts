@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import client from '../client/prismaClient'
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { UserCreatePayload, UserDeletePayload, UserUpdatePayload } from "./types";
+import { UserCreatePayload, UserDeletePayload, UserUpdatePayload, UserCreateInput } from "./types";
 
 
 async function getAllUsers(){
@@ -9,18 +9,7 @@ async function getAllUsers(){
         const users = await client.user.findMany()
         return users
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
     
 }
@@ -37,18 +26,7 @@ async function getAllNameUsers(){
         )
         return users
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 
@@ -65,18 +43,7 @@ async function getUserByIdFull(id:number){
 
         return user
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 async function createOneUser(data: UserCreatePayload){
@@ -89,26 +56,15 @@ async function createOneUser(data: UserCreatePayload){
             }
         })
 
-        if (isUserExists) return {status: "error", message: "User already exists"}
+        if (isUserExists) return null
 
         const user = await client.user.create({
             data: data
         })
 
-        return {status: "success"}
+        return user
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
     
 }
@@ -125,18 +81,7 @@ async function updateOneUser(data: UserUpdatePayload){
 
         return user
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 
@@ -149,50 +94,83 @@ async function deleteOneUser(data: UserDeletePayload){
         })
         return user
     } catch (error){
-        console.log(error)
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 
 async function getUserFields(){
     try{
-        const fields = Prisma.dmmf.datamodel.models.find(model => model.name === "User")?.fields
+        const fields = Prisma.dmmf.datamodel.models.find(model => model.name === "User")?.fields.filter(field => field.name !== "reviews")
         return fields
     } catch (error){
-        if (error instanceof PrismaClientKnownRequestError){
-            if (error.code == 'P2002'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2015'){
-                console.log(error.message)
-                throw error
-            } else if (error.code == 'P2019'){
-                console.log(error.message)
-                throw error
-            } 
-        }
+        return (error as Error).message
     }
 }
 
-const genresRepository = {
+
+
+
+
+async function findUserByEmail(email: string){
+    try {
+        let user = await client.user.findUnique({
+            where: {
+                email: email
+            }
+        })
+        return user;
+    } catch(error){
+        return (error as Error).message
+    }
+}
+
+async function createUser(data: UserCreateInput){
+    try{
+        const user = await client.user.create({
+            data: data
+        })
+        return user;
+    } catch(error){
+        return (error as Error).message
+    }
+}
+
+
+async function getUserById(id: number){
+    try {
+        let user = await client.user.findUnique({
+            where: {
+                id: id
+            },
+            select:{
+                src: true,
+                email: true,
+                name: true,
+                role: true
+            }
+        })
+        return user;
+    } catch(error){
+        return (error as Error).message
+    }
+}
+
+
+
+
+
+
+const usersRepository = {
     getAllUsers: getAllUsers,
     getAllNameUsers: getAllNameUsers,
     getUserByIdFull: getUserByIdFull,
     createOneUser: createOneUser,
     deleteOneUser: deleteOneUser,
     updateOneUser: updateOneUser,
-    getUserFields: getUserFields
+    getUserFields: getUserFields,
+    findUserByEmail: findUserByEmail,
+    createUser: createUser,
+    getUserById: getUserById
 }
 
-export default genresRepository
+export default usersRepository

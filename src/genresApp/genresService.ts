@@ -1,32 +1,35 @@
 import { Request, Response } from "express"
 import genresRepository from "./genresRepository"
-import { GenreCreatePayload, GenreDeletePayload, GenreUpdatePayload } from "./types"
+import { GenreCreatePayload, GenreDeletePayload, GenrePayload, GenreUpdatePayload, GenreNamesPayload } from "./types"
+import { ISuccess, IError } from "../types/types"
 
 
 
-
-async function getAllGenres(){
+async function getAllGenres(): Promise<ISuccess<GenrePayload[]> | IError>{
     const genres = await genresRepository.getAllGenres()
-    return genres
+
+    if (!genres) return {status: "error", message: "There are no genres"}
+    if (typeof(genres) === "string") return {status: "error", message: "Error while working with prisma"}
+
+    return {status: "success", data: genres}
 }
 
-
-async function getGenresNameAndId(){
+async function getGenresNameAndId(): Promise<ISuccess<GenreNamesPayload[]> | IError>{
     const genres = await genresRepository.getGenresNameAndId()
-    return genres
+
+    if (!genres) return {status: "error", message: "Error while getting genres names"}
+    if (typeof(genres) === "string") return {status: "error", message: "Error while working with prisma"}
+
+    return {status: "success", data: genres}
+
 }
 
-async function getAllNameGenres(){
-    const actors = await genresRepository.getAllNameGenres()
-    return actors
-}
 
-
-async function getGenreByIdFull(id: number){
+async function getGenreByIdFull(id: number): Promise<ISuccess<any> | IError>{
     const genre = await genresRepository.getGenreByIdFull(id)
 
-    if (!genre) return {error: "error"}
-    
+    if (!genre) return {status: "error", message: "Error while getting full genre by id"}
+    if (typeof(genre) === "string") return {status: "error", message: "Error while working with prisma"}
     
     const modifiedGenre = {
         ...genre,
@@ -56,26 +59,62 @@ async function getGenreByIdFull(id: number){
         }
     }
 
-    return genreObj
+    return {status: "success", data: genreObj}
 }
 
-async function createOneGenre(data: GenreCreatePayload){
+async function createOneGenre(data: GenreCreatePayload): Promise<ISuccess<string> | IError>{
     const genre = await genresRepository.createOneGenre(data)
-    return genre
+
+    if (typeof(genre) === "string") return {status: "error", message: "Error while working with prisma"}
+
+    if (Array.isArray(genre)){
+        for (const el of genre) {
+            if (!el) {
+                return {status: "error", message: "Error while creating genre"}
+            }
+        }
+    }
+
+    return {status: "success", data: "Genre was created successfully"}
 }
 
-async function updateOneGenre(data: GenreUpdatePayload){
+async function updateOneGenre(data: GenreUpdatePayload): Promise<ISuccess<string> | IError>{
     const genre = await genresRepository.updateOneGenre(data)
-    return genre
+
+    if (typeof(genre) === "string") return {status: "error", message: "Error while working with prisma"}
+
+    if (Array.isArray(genre)){
+        for (const el of genre) {
+            if (!el) {
+                return {status: "error", message: "Error while updating genre"}
+            }
+        }
+    }
+
+    return {status: "success", data: "Genre was updated successfully"}
 }
 
-async function deleteOneGenre(data: GenreDeletePayload){
+async function deleteOneGenre(data: GenreDeletePayload): Promise<ISuccess<string> | IError>{
     const genre = await genresRepository.deleteOneGenre(data)
-    return genre
+
+    if (typeof(genre) === "string") return {status: "error", message: "Error while working with prisma"}
+
+    if (Array.isArray(genre)){
+        for (const el of genre) {
+            if (!el) {
+                return {status: "error", message: "Error while deleting genre"}
+            }
+        }
+    }
+
+    return {status: "success", data: "Genre was deleted successfully"}
 }
 
-async function getGenreFields(){
+async function getGenreFields(): Promise<ISuccess<any> | IError>{
     const fields = await genresRepository.getGenreFields()
+
+    if (!fields) return {status: "error", message: "Error while getting genre fields"}
+    if (typeof(fields) === "string") return {status: "error", message: "Error while working with prisma"}
 
     interface LooseObject {
         [key: string]: any
@@ -102,7 +141,7 @@ async function getGenreFields(){
 
         
     })
-    return object
+    return {status: "success", data: object}
 }
 
 
@@ -114,7 +153,6 @@ const genresService = {
     updateOneGenre: updateOneGenre,
     deleteOneGenre: deleteOneGenre,
     getGenreFields: getGenreFields,
-    getAllNameGenres: getAllNameGenres
 }
 
 export default genresService

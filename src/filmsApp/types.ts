@@ -17,19 +17,45 @@ type ReviewPayload = Prisma.ReviewGetPayload<{
         }
     }
 }>
+interface IActor{
+    id: number
+    name: string
+}
 
-export type FilmPayloadWithActorsGenresReviews = Prisma.FilmGetPayload<{}> & {actors: string[], genres: string[], reviews: ReviewPayload[]}
+export type FilmPayloadWithActorsGenresReviews = Prisma.FilmGetPayload<{}> & {actors: IActor[], genres: string[], reviews: ReviewPayload[]}
 
 
-export type FilmGetPayload = Prisma.FilmGetPayload<{
-    omit: {
-        id: true;
-    };
-}> & {
-    genres: number[];
-    actors: number[];
-    directors: number[];
-};
+export type FilmNamesPayload = Prisma.FilmGetPayload<{
+	select: {
+		id: true,
+		name: true
+	}
+}>
+
+
+// export type FilmPayloadWithActorsGenresReviewsDirectorsIds = Prisma.FilmGetPayload<{
+//     include: {
+//         genres: {
+//             select:{
+//                 genreId: true
+//             }
+//         },
+//         actors: {
+//             select: {
+//                 actorId: true
+//             }
+//         },
+//         directors: {
+//             select: {
+//                 directorId: true
+//             }
+//         }
+//     },
+//     omit: {
+//         id: true
+//     }
+// }>
+
 
 export type FilmCreatePayload = Prisma.FilmGetPayload<{
     omit: {

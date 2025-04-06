@@ -35,6 +35,8 @@ async function getFilmFields(req: Request, res: Response){
 
 async function createOneFilm(req: Request, res: Response){
     const data: FilmCreatePayload = req.body
+    data.rating = +data.rating
+    data.year = +data.year
     const film = await filmsService.createOneFilm(data)
     res.json(film)
 }
