@@ -6,12 +6,13 @@ import {Router} from 'express';
 const filmsRouter = Router();
 
 filmsRouter.get("/all", filmsController.getAllFilms)
+filmsRouter.get("/fields", authTokenMiddleware, checkRoleMiddleware, filmsController.getFilmFields)
+
 filmsRouter.get("/:id", filmsController.getFilmById)
 
 filmsRouter.use(authTokenMiddleware)
 filmsRouter.use(checkRoleMiddleware)
 
-filmsRouter.get("/fields", filmsController.getFilmFields)
 filmsRouter.get("/all/names", filmsController.getFilmsNameAndId)
 filmsRouter.get("/full/:id", filmsController.getFilmByIdFull)
 

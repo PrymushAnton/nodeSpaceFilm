@@ -119,7 +119,7 @@ async function deleteOneActor(data: ActorDeletePayload): Promise<ISuccess<string
 
 async function getActorFields(): Promise<ISuccess<any> | IError>{
     const fields = await actorsRepository.getActorFields()
-
+    console.log(fields)
     if (!fields) return {status: "error", message: "Error while getting actor fields"}
     if (typeof(fields) === "string") return {status: "error", message: "Error while working with prisma"}
 

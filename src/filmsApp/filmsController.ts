@@ -29,6 +29,7 @@ async function getFilmByIdFull(req: Request, res: Response){
 }
 
 async function getFilmFields(req: Request, res: Response){
+    console.log(1231231231)
     const fields = await filmsService.getFilmFields()
     res.json(fields)
 }
