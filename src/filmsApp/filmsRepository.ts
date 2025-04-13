@@ -11,6 +11,7 @@ async function getAllFilms(){
             include: {
                 reviews: {
                     select: {
+                        name: true,
                         text: true,
                         mark: true,
                         user: {
@@ -56,6 +57,23 @@ async function getAllFilms(){
     
 }
 
+async function getFourFilms(){
+    try{
+        const films = await client.film.findMany({
+            orderBy: {
+                id: "desc"
+            },
+            take: 4,
+        })
+        return films
+    } catch (error){
+        return (error as Error).message
+    }
+    
+}
+
+
+
 async function getFilmById(id: number){
     
     try{
@@ -66,6 +84,7 @@ async function getFilmById(id: number){
             include: {
                 reviews: {
                     select: {
+                        name: true,
                         text: true,
                         mark: true,
                         user: {
@@ -315,7 +334,8 @@ const filmsRepository = {
     getFilmFields: getFilmFields,
     createOneFilm: createOneFilm,
     updateOneFilm: updateOneFilm,
-    deleteOneFilm: deleteOneFilm
+    deleteOneFilm: deleteOneFilm,
+    getFourFilms: getFourFilms
 }
 
 export default filmsRepository

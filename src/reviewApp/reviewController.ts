@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 
 import reviewsService from "./reviewService";
-import { ReviewCreatePayload, ReviewDeletePayload, ReviewUpdatePayload } from './types';
+import { ReviewCreatePayload, ReviewCreatePayloadByUser, ReviewDeletePayload, ReviewUpdatePayload } from './types';
 
 
 async function getAllReviews(req: Request, res: Response){
@@ -19,6 +19,16 @@ async function getReviewByIdFull(req: Request, res: Response){
     const review = await reviewsService.getReviewByIdFull(id)
     res.json(review)
 }
+
+async function createOneReviewByUser(req: Request, res: Response){
+    const data: ReviewCreatePayloadByUser = req.body
+    data.filmId = +data.filmId
+    data.mark = +data.mark
+    const review = await reviewsService.createOneReview({...data, userId: res.locals.userId})
+    console.log(review)
+    res.json({status: "create", data: review})
+}
+
 
 async function createOneReview(req: Request, res: Response){
     const data: ReviewCreatePayload = req.body
@@ -67,7 +77,8 @@ const reviewsController = {
     createOneReview: createOneReview,
     updateOneReview: updateOneReview,
     deleteOneReview: deleteOneReview,
-    getReviewFields: getReviewFields
+    getReviewFields: getReviewFields,
+    createOneReviewByUser: createOneReviewByUser
 }
 
 export default reviewsController

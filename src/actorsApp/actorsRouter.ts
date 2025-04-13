@@ -5,7 +5,7 @@ import {Router} from 'express';
 
 const actorsRouter = Router();
 
-
+actorsRouter.get("/get-popular", actorsController.getPopularActors)
 actorsRouter.get("/fields", authTokenMiddleware, checkRoleMiddleware,  actorsController.getActorFields)
 actorsRouter.get("/:id", actorsController.getActorById)
 

@@ -14,9 +14,16 @@ export type ReviewCreatePayload = Prisma.ReviewGetPayload<{
     omit: {
         id: true;
     };
-}> & {
-    filmId: number;
-};
+}>
+
+
+export type ReviewCreatePayloadByUser = Prisma.ReviewGetPayload<{
+    omit: {
+        id: true;
+        userId: true
+    };
+}> 
+
 
 
 export type ReviewUpdatePayload = Prisma.ReviewGetPayload<{}> & {

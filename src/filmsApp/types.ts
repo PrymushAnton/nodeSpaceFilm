@@ -3,10 +3,9 @@ import { Prisma } from "@prisma/client";
 
 export type FilmPayload = Prisma.FilmGetPayload<{}>;
 
-
-
 type ReviewPayload = Prisma.ReviewGetPayload<{
     select: {
+        name: true,
         text: true,
         mark: true,
         user: {

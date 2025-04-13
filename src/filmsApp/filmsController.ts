@@ -10,6 +10,13 @@ async function getAllFilms(req: Request, res: Response){
 }
 
 
+async function getFourFilms(req: Request, res: Response){
+    const films = await filmsService.getFourFilms()
+    res.json(films)
+}
+
+
+
 async function getFilmById(req: Request, res: Response){
     const id = +req.params.id
     const film = await filmsService.getFilmById(id)
@@ -74,7 +81,8 @@ const filmsController = {
     getFilmFields: getFilmFields,
     createOneFilm: createOneFilm,
     updateOneFilm: updateOneFilm,
-    deleteOneFilm: deleteOneFilm
+    deleteOneFilm: deleteOneFilm,
+    getFourFilms: getFourFilms
 }
 
 export default filmsController

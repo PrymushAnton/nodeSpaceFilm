@@ -2,7 +2,7 @@ model User {
   id       Int    @id @default(autoincrement())
   name     String @unique
   email    String @unique
-  src      String @default("https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vecteezy.com%2Ffree-vector%2Fanonymous-avatar&psig=AOvVaw0C2MLtISZgUxAPII1oISCG&ust=1744005156327000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCMCZjNDbwowDFQAAAAAdAAAAABAE")
+  src      String @default("https://upload.wikimedia.org/wikipedia/commons/a/a6/Anonymous_emblem.svg")
   password String
   role     String @default("user")
 

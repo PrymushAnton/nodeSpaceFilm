@@ -7,6 +7,11 @@ async function getAllActors(req: Request, res: Response){
     res.json(actors)
 }
 
+async function getPopularActors(req: Request, res: Response){
+    const actors = await actorsService.getPopularActors()
+    res.json(actors)
+}
+
 async function getActorById(req: Request, res: Response){
     const id = +req.params.id
     const actor = await actorsService.getActorById(id)
@@ -61,7 +66,8 @@ const actorsController = {
     createOneActor: createOneActor,
     updateOneActor: updateOneActor,
     deleteOneActor: deleteOneActor,
-    getActorFields: getActorFields
+    getActorFields: getActorFields,
+    getPopularActors: getPopularActors
 }
 
 export default actorsController

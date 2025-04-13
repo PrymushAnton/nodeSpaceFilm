@@ -1,6 +1,5 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import client from '../client/prismaClient'
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { ActorCreatePayload, ActorDeletePayload, ActorPayload, ActorUpdatePayload } from "./types";
 
 
@@ -13,6 +12,32 @@ async function getAllActors(){
     }
 }
 
+async function getPopularActors(){
+    try{
+        const actorObjs = await client.actorsOnFilms.groupBy({
+            by: ['actorId'],
+            _count: {
+                actorId: true
+            },
+            orderBy: {
+                _count: {
+                    actorId: 'desc'
+                }
+            },
+            take: 12
+        })
+        const ids = actorObjs.map(obj => obj.actorId)
+
+        const actors = await client.actor.findMany({
+            where: {
+                id: {in: ids}
+            }
+        })
+        return actors
+    } catch (error){
+        return (error as Error).message
+    }
+}
 
 
 async function getActorById(id:number){
@@ -190,7 +215,8 @@ const actorsRepository = {
     createOneActor: createOneActor,
     updateOneActor: updateOneActor,
     deleteOneActor: deleteOneActor,
-    getActorFields: getActorFields
+    getActorFields: getActorFields,
+    getPopularActors: getPopularActors
 }
 
 export default actorsRepository
