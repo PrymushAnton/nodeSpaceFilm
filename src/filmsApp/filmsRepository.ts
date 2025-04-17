@@ -200,7 +200,6 @@ async function createOneFilm(data: FilmCreatePayload){
             }
         })
         if (isFilmExists) {
-            console.log(12312312)
             return null
         }
         const film = await client.film.create({

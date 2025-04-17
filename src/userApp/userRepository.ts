@@ -146,7 +146,8 @@ async function getUserById(id: number){
                 src: true,
                 email: true,
                 name: true,
-                role: true
+                role: true,
+                age: true
             }
         })
         return user;
@@ -156,7 +157,83 @@ async function getUserById(id: number){
 }
 
 
+async function getUserFavouriteFilms(id: number){
+    try {
+        // let user = await client.user.findUnique({
+        //     where: {
+        //         id: id
+        //     },
+        //     select:{
+        //         FavouriteFilms: {
+        //             select: {
+        //                 film: {
+        //                     select: {
+        //                         name: true,
+        //                         src: true,
+        //                         description: true,
+        //                         rating: true
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // })
 
+        let films = await client.film.findMany({
+            where: {
+                users: {
+                    some: {
+                        userId: id
+                    }
+                }
+            },
+            select: {
+                id: true,
+                name: true,
+                src: true,
+                description: true,
+                rating: true
+            }
+        })
+
+        return films
+    } catch(error){
+        return (error as Error).message
+    }
+}
+
+async function addFavouriteFilm(userId: number, filmId: number){
+    try {
+        let favouriteFilm = await client.favouriteFilmsOnUsers.create({
+            data: {
+                userId: userId,
+                filmId: filmId
+            }
+        })
+
+        return favouriteFilm
+    } catch(error){
+        return (error as Error).message
+    }
+}
+
+
+async function removeFavouriteFilm(userId: number, filmId: number){
+    try {
+        let favouriteFilm = await client.favouriteFilmsOnUsers.delete({
+            where: {
+                filmId_userId: {
+                    userId: userId,
+                    filmId: filmId
+                }
+            }
+        })
+
+        return favouriteFilm
+    } catch(error){
+        return (error as Error).message
+    }
+}
 
 
 
@@ -170,7 +247,10 @@ const usersRepository = {
     getUserFields: getUserFields,
     findUserByEmail: findUserByEmail,
     createUser: createUser,
-    getUserById: getUserById
+    getUserById: getUserById,
+    getUserFavouriteFilms: getUserFavouriteFilms,
+    addFavouriteFilm: addFavouriteFilm,
+    removeFavouriteFilm: removeFavouriteFilm
 }
 
 export default usersRepository

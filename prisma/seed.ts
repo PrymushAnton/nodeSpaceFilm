@@ -1071,28 +1071,57 @@ async function createDataBase() {
 		name: "Serj",
 		email: "serj@gmail.com",
 		src: "https://masterpiecer-images.s3.yandex.net/a809a13ba68211eea092b2bae0cf569f:upscaled",
-		password: "serjserj"
+		password: "serjserj",
+		age: 88
 	})
 
 	await userService.registerUser({
 		name: "Roman",
 		email: "roman@gmail.com",
 		src: "https://masterpiecer-images.s3.yandex.net/1d9aa8e5833111eea173beb332dff282:upscaled",
-		password: "romanroman"
+		password: "romanroman",
+		age: 98
 	})
 
 	await userService.registerUser({
 		name: "SeRo",
 		email: "sero@gmail.com",
 		src: "https://masterpiecer-images.s3.yandex.net/bb429de19eed11eea139b646b2a0ffc1:upscaled",
-		password: "serosero"
+		password: "serosero",
+		age: 12
 	})
 
 	await userService.registerUser({
 		name: "Tony",
 		email: "tony@gmail.com",
 		password: "12341234",
-		role: "admin"
+		role: "admin",
+		age: 34
+	})
+
+	await prisma.favouriteFilmsOnUsers.createMany({
+		data: [
+			{
+				userId: 1,
+				filmId: 1
+			},
+			{
+				userId: 1,
+				filmId: 2
+			},
+			{
+				userId: 1,
+				filmId: 4
+			},
+			{
+				userId: 1,
+				filmId: 6
+			},
+			{
+				userId: 1,
+				filmId: 7
+			}
+		]
 	})
 
 

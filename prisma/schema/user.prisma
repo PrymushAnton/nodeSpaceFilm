@@ -4,7 +4,9 @@ model User {
   email    String @unique
   src      String @default("https://upload.wikimedia.org/wikipedia/commons/a/a6/Anonymous_emblem.svg")
   password String
+  age      Int
   role     String @default("user")
 
-  reviews Review[]
+  reviews        Review[]
+  FavouriteFilms FavouriteFilmsOnUsers[]
 }

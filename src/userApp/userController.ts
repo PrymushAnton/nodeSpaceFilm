@@ -65,7 +65,25 @@ async function registerUser(req: Request, res: Response){
 async function getUserById(req: Request, res: Response){
     const id = res.locals.userId
     const result = await usersService.getUserById(id)
+    res.json(result)
+}
 
+async function getUserFavouriteFilms(req: Request, res: Response){
+    const id = res.locals.userId
+    const result = await usersService.getUserFavouriteFilms(id)
+    res.json(result)
+}
+
+
+async function addFavouriteFilm(req: Request, res: Response){
+    const {filmId, userId} = req.body
+    const result = await usersService.addFavouriteFilm(userId, filmId)
+    res.json(result)
+}
+
+async function removeFavouriteFilm(req: Request, res: Response){
+    const {filmId, userId} = req.body
+    const result = await usersService.removeFavouriteFilm(userId, filmId)
     res.json(result)
 }
 
@@ -80,7 +98,10 @@ const usersController = {
     getUserFields: getUserFields,
     authUser: authUser,
     registerUser: registerUser,
-    getUserById: getUserById
+    getUserById: getUserById,
+    getUserFavouriteFilms: getUserFavouriteFilms,
+    addFavouriteFilm: addFavouriteFilm,
+    removeFavouriteFilm: removeFavouriteFilm
 }
 
 export default usersController

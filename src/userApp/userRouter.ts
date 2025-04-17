@@ -8,12 +8,16 @@ const usersRouter = Router();
 usersRouter.post('/login', usersController.authUser)
 usersRouter.post('/register', usersController.registerUser)
 
-usersRouter.get("/me", authTokenMiddleware, usersController.getUserById)
-
-
-
 
 usersRouter.use(authTokenMiddleware)
+
+usersRouter.get("/me", usersController.getUserById)
+usersRouter.get("/get-favourite-films", usersController.getUserFavouriteFilms)
+
+usersRouter.post("/add-favourite-film", usersController.getUserFavouriteFilms)
+usersRouter.post("/remove-favourite-film", usersController.getUserFavouriteFilms)
+
+
 usersRouter.use(checkRoleMiddleware)
 
 usersRouter.get("/fields", usersController.getUserFields)
