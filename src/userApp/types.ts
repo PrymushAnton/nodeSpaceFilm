@@ -58,3 +58,11 @@ export interface IPostError {
 export interface IPostSuccess {
     status: "success"
 }
+
+export type IUserNewData = Prisma.UserGetPayload<{
+    omit: {
+        id: true
+        password: true
+        role: true
+    }
+}>

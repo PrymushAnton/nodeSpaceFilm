@@ -325,6 +325,23 @@ async function deleteOneFilm(data: FilmDeletePayload){
     }
 }
 
+async function isFavourite(userId: number, filmId: number){
+    try {
+        const film = await client.favouriteFilmsOnUsers.findUnique({
+            where: {
+                filmId_userId: {
+                    userId: userId,
+                    filmId: filmId
+                }
+            }
+        })
+        return film
+    } catch (error){
+        console.log((error as Error).message)
+        return (error as Error).message
+    }
+}
+
 const filmsRepository = {
     getAllFilms: getAllFilms,
     getFilmById: getFilmById,
@@ -334,7 +351,8 @@ const filmsRepository = {
     createOneFilm: createOneFilm,
     updateOneFilm: updateOneFilm,
     deleteOneFilm: deleteOneFilm,
-    getFourFilms: getFourFilms
+    getFourFilms: getFourFilms,
+    isFavourite: isFavourite
 }
 
 export default filmsRepository

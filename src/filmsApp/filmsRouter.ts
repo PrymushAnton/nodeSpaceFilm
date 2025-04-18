@@ -8,7 +8,6 @@ const filmsRouter = Router();
 filmsRouter.get("/all", filmsController.getAllFilms)
 filmsRouter.get("/fields", authTokenMiddleware, checkRoleMiddleware, filmsController.getFilmFields)
 filmsRouter.get("/get-four", filmsController.getFourFilms)
-
 filmsRouter.get("/:id", filmsController.getFilmById)
 
 filmsRouter.use(authTokenMiddleware)

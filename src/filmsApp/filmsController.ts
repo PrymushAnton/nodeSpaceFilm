@@ -36,7 +36,6 @@ async function getFilmByIdFull(req: Request, res: Response){
 }
 
 async function getFilmFields(req: Request, res: Response){
-    console.log(1231231231)
     const fields = await filmsService.getFilmFields()
     res.json(fields)
 }
@@ -71,6 +70,7 @@ async function deleteOneFilm(req: Request, res: Response){
     const film = await filmsService.deleteOneFilm(data)
     res.json({status: "delete"})
 }
+
 
 
 const filmsController = {

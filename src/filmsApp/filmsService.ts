@@ -166,6 +166,8 @@ async function deleteOneFilm(data: FilmDeletePayload): Promise<ISuccess<string> 
 }
 
 
+
+
 const filmsService = {
     getAllFilms: getAllFilms,
     getFilmById: getFilmById,
@@ -175,6 +177,6 @@ const filmsService = {
     createOneFilm: createOneFilm,
     updateOneFilm: updateOneFilm,
     deleteOneFilm: deleteOneFilm,
-    getFourFilms: getFourFilms
+    getFourFilms: getFourFilms 
 }
 export default filmsService

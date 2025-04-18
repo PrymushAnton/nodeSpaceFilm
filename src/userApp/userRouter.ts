@@ -14,8 +14,12 @@ usersRouter.use(authTokenMiddleware)
 usersRouter.get("/me", usersController.getUserById)
 usersRouter.get("/get-favourite-films", usersController.getUserFavouriteFilms)
 
-usersRouter.post("/add-favourite-film", usersController.getUserFavouriteFilms)
-usersRouter.post("/remove-favourite-film", usersController.getUserFavouriteFilms)
+usersRouter.post("/add-favourite-film", usersController.addFavouriteFilm)
+usersRouter.post("/remove-favourite-film", usersController.removeFavouriteFilm)
+usersRouter.get("/is-favourite/:id", usersController.isFavourite)
+
+usersRouter.post("/change-password", usersController.changePassword)
+usersRouter.post("/change-data", usersController.changeData)
 
 
 usersRouter.use(checkRoleMiddleware)
