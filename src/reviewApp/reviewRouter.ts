@@ -5,7 +5,12 @@ import {Router} from 'express';
 
 const reviewsRouter = Router();
 
+
+
 reviewsRouter.use(authTokenMiddleware)
+
+reviewsRouter.post("/create-role-user", reviewsController.createOneReviewByUser)
+
 reviewsRouter.use(checkRoleMiddleware)
 
 reviewsRouter.get("/fields", reviewsController.getReviewFields)

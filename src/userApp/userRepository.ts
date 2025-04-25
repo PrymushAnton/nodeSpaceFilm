@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import client from '../client/prismaClient'
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { UserCreatePayload, UserDeletePayload, UserUpdatePayload, UserCreateInput } from "./types";
+import { UserCreatePayload, UserDeletePayload, UserUpdatePayload, UserCreateInput, IUserNewData } from "./types";
 
 
 async function getAllUsers(){
@@ -124,6 +124,19 @@ async function findUserByEmail(email: string){
     }
 }
 
+async function findUserByName(name: string){
+    try {
+        let user = await client.user.findUnique({
+            where: {
+                name: name
+            }
+        })
+        return user;
+    } catch(error){
+        return (error as Error).message
+    }
+}
+
 async function createUser(data: UserCreateInput){
     try{
         const user = await client.user.create({
@@ -146,7 +159,8 @@ async function getUserById(id: number){
                 src: true,
                 email: true,
                 name: true,
-                role: true
+                role: true,
+                age: true
             }
         })
         return user;
@@ -156,9 +170,114 @@ async function getUserById(id: number){
 }
 
 
+async function getUserFavouriteFilms(id: number){
+    try {
+        let films = await client.film.findMany({
+            where: {
+                users: {
+                    some: {
+                        userId: id
+                    }
+                }
+            },
+            select: {
+                id: true,
+                name: true,
+                src: true,
+                description: true,
+                rating: true
+            }
+        })
+
+        return films
+    } catch(error){
+        return (error as Error).message
+    }
+}
+
+async function addFavouriteFilm(userId: number, filmId: number){
+    try {
+        let favouriteFilm = await client.favouriteFilmsOnUsers.create({
+            data: {
+                userId: userId,
+                filmId: +filmId
+            }
+        })
+
+        return favouriteFilm
+    } catch(error){
+        return (error as Error).message
+    }
+}
 
 
+async function removeFavouriteFilm(userId: number, filmId: number){
+    try {
+        let favouriteFilm = await client.favouriteFilmsOnUsers.delete({
+            where: {
+                filmId_userId: {
+                    userId: userId,
+                    filmId: +filmId
+                }
+            }
+        })
 
+        return favouriteFilm
+    } catch(error){
+        console.log((error as Error).message)
+        return (error as Error).message
+    }
+}
+
+async function isFavourite(userId: number, filmId: number){
+    try {
+        const film = await client.favouriteFilmsOnUsers.findUnique({
+            where: {
+                filmId_userId: {
+                    userId: userId,
+                    filmId: filmId
+                }
+            }
+        })
+        return film
+    } catch (error){
+        return (error as Error).message
+    }
+}
+
+async function changePassword(userId: number, password: string){
+    try {
+        let user = await client.user.update({
+            where: {
+                id: userId
+            },
+            data: {
+                password: password
+            }
+        })
+
+        return user
+    } catch(error){
+        console.log((error as Error).message)
+        return (error as Error).message
+    }
+}
+
+async function changeData(userId: number, data: IUserNewData){
+    try {
+        const user = await client.user.update({
+            where: {
+                id: userId
+            },
+            data: data
+        })
+
+        return user
+    } catch(error){
+        console.log((error as Error).message)
+        return (error as Error).message
+    }
+}
 
 const usersRepository = {
     getAllUsers: getAllUsers,
@@ -169,8 +288,15 @@ const usersRepository = {
     updateOneUser: updateOneUser,
     getUserFields: getUserFields,
     findUserByEmail: findUserByEmail,
+    findUserByName: findUserByName,
     createUser: createUser,
-    getUserById: getUserById
+    getUserById: getUserById,
+    getUserFavouriteFilms: getUserFavouriteFilms,
+    addFavouriteFilm: addFavouriteFilm,
+    removeFavouriteFilm: removeFavouriteFilm,
+    isFavourite: isFavourite,
+    changePassword: changePassword,
+    changeData: changeData
 }
 
 export default usersRepository

@@ -1,0 +1,8 @@
+model FavouriteFilmsOnUsers {
+  film   Film @relation(fields: [filmId], references: [id])
+  filmId Int
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  @@id([filmId, userId])
+}

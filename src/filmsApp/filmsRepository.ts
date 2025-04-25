@@ -11,6 +11,7 @@ async function getAllFilms(){
             include: {
                 reviews: {
                     select: {
+                        name: true,
                         text: true,
                         mark: true,
                         user: {
@@ -56,6 +57,23 @@ async function getAllFilms(){
     
 }
 
+async function getFourFilms(){
+    try{
+        const films = await client.film.findMany({
+            orderBy: {
+                id: "desc"
+            },
+            take: 4,
+        })
+        return films
+    } catch (error){
+        return (error as Error).message
+    }
+    
+}
+
+
+
 async function getFilmById(id: number){
     
     try{
@@ -66,6 +84,7 @@ async function getFilmById(id: number){
             include: {
                 reviews: {
                     select: {
+                        name: true,
                         text: true,
                         mark: true,
                         user: {
@@ -181,7 +200,6 @@ async function createOneFilm(data: FilmCreatePayload){
             }
         })
         if (isFilmExists) {
-            console.log(12312312)
             return null
         }
         const film = await client.film.create({
@@ -307,6 +325,23 @@ async function deleteOneFilm(data: FilmDeletePayload){
     }
 }
 
+async function isFavourite(userId: number, filmId: number){
+    try {
+        const film = await client.favouriteFilmsOnUsers.findUnique({
+            where: {
+                filmId_userId: {
+                    userId: userId,
+                    filmId: filmId
+                }
+            }
+        })
+        return film
+    } catch (error){
+        console.log((error as Error).message)
+        return (error as Error).message
+    }
+}
+
 const filmsRepository = {
     getAllFilms: getAllFilms,
     getFilmById: getFilmById,
@@ -315,7 +350,9 @@ const filmsRepository = {
     getFilmFields: getFilmFields,
     createOneFilm: createOneFilm,
     updateOneFilm: updateOneFilm,
-    deleteOneFilm: deleteOneFilm
+    deleteOneFilm: deleteOneFilm,
+    getFourFilms: getFourFilms,
+    isFavourite: isFavourite
 }
 
 export default filmsRepository

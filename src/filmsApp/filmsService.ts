@@ -1,6 +1,6 @@
 import { IError, ISuccess } from "../types/types"
 import filmsRepository from "./filmsRepository"
-import { FilmNamesPayload, FilmCreatePayload, FilmDeletePayload, FilmPayloadWithActorsGenresReviews, FilmUpdatePayload } from "./types"
+import { FilmNamesPayload, FilmCreatePayload, FilmDeletePayload, FilmPayloadWithActorsGenresReviews, FilmUpdatePayload, FilmPayload } from "./types"
 
 
 
@@ -10,6 +10,14 @@ async function getAllFilms(): Promise<ISuccess<FilmPayloadWithActorsGenresReview
     if (typeof(films) === "string") return {status: "error", message: "Error while working with prisma"}
     return {status: "success", data: films}
 }
+
+async function getFourFilms(): Promise<ISuccess<FilmPayload[]> | IError>{
+    const films = await filmsRepository.getFourFilms()
+    if (!films) return {status: "error", message: "There are no films"}
+    if (typeof(films) === "string") return {status: "error", message: "Error while working with prisma"}
+    return {status: "success", data: films}
+}
+
 
 async function getFilmById(id: number): Promise<ISuccess<FilmPayloadWithActorsGenresReviews> | IError>{
     const films = await filmsRepository.getFilmById(id)
@@ -158,6 +166,8 @@ async function deleteOneFilm(data: FilmDeletePayload): Promise<ISuccess<string> 
 }
 
 
+
+
 const filmsService = {
     getAllFilms: getAllFilms,
     getFilmById: getFilmById,
@@ -166,6 +176,7 @@ const filmsService = {
     getFilmFields: getFilmFields,
     createOneFilm: createOneFilm,
     updateOneFilm: updateOneFilm,
-    deleteOneFilm: deleteOneFilm
+    deleteOneFilm: deleteOneFilm,
+    getFourFilms: getFourFilms 
 }
 export default filmsService

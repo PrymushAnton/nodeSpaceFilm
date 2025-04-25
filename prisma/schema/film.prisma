@@ -15,6 +15,7 @@ model Film {
 
   genres    GenresOnFilms[]
   actors    ActorsOnFilms[]
+  users     FavouriteFilmsOnUsers[]
   directors DirectorsOnFilms[]
   reviews   Review[]
 }

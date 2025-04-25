@@ -917,179 +917,213 @@ async function createDataBase() {
 	
 
 
-	// const actor4 = await prisma.actor.create({
-	// 	data: {
-	// 		name: "Ralph Fiennes",
-	// 		src: "https://m.media-amazon.com/images/M/MV5BMzc5MjE1NDgyN15BMl5BanBnXkFtZTcwNzg2ODgwNA@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
-			
-	// 		films: {
-	// 			create: [
-	// 				{
-	// 					film: {
-	// 						connect: {
-	// 							id: 2,
-	// 						},
-	// 					},
-	// 				},
-	// 			]
-	// 		}
-	// 	}
-	// })
+	const actor4 = await prisma.actor.create({
+		data: {
+			name: "Ralph Fiennes",
+			src: "https://m.media-amazon.com/images/M/MV5BMzc5MjE1NDgyN15BMl5BanBnXkFtZTcwNzg2ODgwNA@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
+			bornInDate: "December 22, 1962",
+			bornInCity: "Ipswich, Suffolk, England",
+			bornInCountry: "UK",
+			biography: "Actor Ralph Nathaniel Twisleton-Wykeham-Fiennes was born on December 22, 1962 in Suffolk, England, to Jennifer Anne Mary Alleyne (Lash), a novelist, and Mark Fiennes, a photographer. He is the eldest of six children. Four of his siblings are also in the arts: Martha Fiennes, a director; Magnus Fiennes, a musician; Sophie Fiennes, a producer; and Joseph Fiennes, an actor. He is of English, Irish, and Scottish origin. A noted Shakespeare interpreter, he first achieved success onstage at the Royal National Theatre. Fiennes first worked on screen in 1990 and then made his film debut in 1992 as Heathcliff in Emily Brontë's Грозовой перевал (1992), opposite Juliette Binoche. 1993 was his 'breakout year'. He had a major role in the controversial Peter Greenaway film Дитя Макона (1993), with Julia Ormond, which was poorly received. Later that year he became known internationally for portraying the amoral Nazi concentration camp commandant Amon Goeth in Steven Spielberg's Список Шиндлера (1993). For this he was nominated for the Academy Award for Best Supporting Actor and the Golden Globe Award for Best Supporting Actor. He did not win, but did win the Best Supporting Actor BAFTA Award for the role, as well as Best Supporting Actor honors from numerous critics groups, including the National Society of Film Critics, and the New York, Chicago, Boston, and London Film Critics associations. His portrayal as Göth also earned him a spot on the American Film Institute's list of Top 50 Film Villains. To look suitable to represent Goeth, Fiennes gained weight, but he managed to shed it afterwards. In 1994, he portrayed American academic Charles Van Doren in Телевикторина (1994). In 1996, he was nominated for the Academy Award for Best Actor for his performance as Count Almásy the World War II epic romance, and another Best Picture winner, Anthony Minghella's Английский пациент (1996), in which he starred with Kristin Scott Thomas. He also received BAFTA and Golden Globe nominations, as well as two Screen Actors Guild (SAG) Award nominations, one for Best Actor and another shared with the film's ensemble cast. Since then, Fiennes has been in a number of notable films, including Странные дни (1995), Оскар и Люсинда (1997), the animated Принц Египта (1998), István Szabó's Вкус солнечного света (1999), Neil Jordan-directed films Конец романа (1999) and Хороший вор (2002), Красный Дракон (2002), Госпожа горничная (2002), Преданный садовник (2005), Залечь на дно в Брюгге (2008), Чтец (2008), co-starring Kate Winslet, Kathryn Bigelow's Oscar®-winning Повелитель бури (2008), Битва титанов (2010), Mike Newell's screen adaptation of Charles Dickens'Большие надежды (2012), with Helena Bonham Carter and Jeremy Irvine, and Wes Anderson's Отель «Гранд Будапешт» (2014).He is also known for his roles in major film franchises such as the Harry Potter film series (2005-2011), in which he played the evil Lord Voldemort. His nephew, Hero Fiennes Tiffin played Tom Riddle, the young Lord Voldemort, in Гарри Поттер и Принц-полукровка (2009). Ralph also appears in the James Bond series, in which he has played M, starting with the 2012 film 007: Координаты «Скайфолл» (2012). In 2011, Fiennes made his directorial debut with his film adaptation of Shakespeare's tragedy political thriller Кориолан (2011), in which he also played the title character, opposite Gerard Butler and Vanessa Redgrave. Fiennes has won a Tony Award for playing Prince Hamlet on Broadway. In 2015, Fiennes played a music producer in Luca Guadagnino's Большой всплеск (2015), starring opposite Tilda Swinton and Matthias Schoenaerts, and in 2016, Fiennes starred in Joel and Ethan Coen's Да здравствует Цезарь! (2016). Since 1999, Fiennes has served as an ambassador for UNICEF UK.",
+			height: "1.8 m",
+			mother: "Jennifer Anne Mary Alleyne Lash",
+			father: "Mark Fiennes",
+			films: {
+				create: [
+					{
+						film: {
+							connect: {
+								id: 2,
+							},
+						},
+					},
+				]
+			}
+		}
+	})
 
-	// const actor5 = await prisma.actor.create({
-	// 	data: {
-	// 		name: "Stanley Tucci",
-	// 		src: "https://m.media-amazon.com/images/M/MV5BMTU1MzE4MjAzMV5BMl5BanBnXkFtZTcwMjA2MTMyMw@@._V1_QL75_UX140_CR0,3,140,140_.jpg",
-	// 		films: {
-	// 			create: [
-	// 				{
-	// 					film: {
-	// 						connect: {
-	// 							id: 2,
-	// 						},
-	// 					},
-	// 				},
-	// 			]
-	// 		}
-	// 	}
-	// })
+	const actor5 = await prisma.actor.create({
+		data: {
+			name: "Stanley Tucci",
+			src: "https://m.media-amazon.com/images/M/MV5BMTU1MzE4MjAzMV5BMl5BanBnXkFtZTcwMjA2MTMyMw@@._V1_QL75_UX140_CR0,3,140,140_.jpg",
+			bornInDate: "November 11, 1960",
+			bornInCity: "Peekskill, New York",
+			bornInCountry: "USA",
+			biography: `Actor Stanley Tucci was born on November 11, 1960, in Peekskill, New York. He is the son of Joan (Tropiano), a writer, and Stanley Tucci, an art teacher. His family is Italian-American, with origins in Calabria. Tucci took an interest in acting while in high school, and went on to attend the State University of New York's Conservatory of Theater Arts in Purchase. He began his professional career on the stage, making his Broadway debut in 1982, and then made his film debut in Честь семьи Прицци (1985). In 2009, Tucci received his first Academy Award nomination for his turn as a child murderer in Милые кости (2009). He also received a BAFTA nomination and a Golden Globe nomination for the same role. Other than The Lovely Bones, Tucci has recently had noteworthy supporting turns in a broad range of movies including Счастливое число Слевина (2006), Дьявол носит Prada (2006) and Первый мститель (2011). Tucci reached his widest audience yet when he played Caesar Flickerman in box office sensation Голодные игры (2012). While maintaining an active career in movies, Tucci received major accolades for some work in television. He won an Emmy and a Golden Globe for his role in TV movie Крёстный отец эфира (1998), an Emmy for a guest turn on Дефективный детектив (2002), and a Golden Globe for his role in HBO movie Заговор (2001). Tucci has also had an extensive career behind the camera. His directorial efforts include Большая ночь (1996), Самозванцы (1998), Секрет Джо Гулда (2000) and Свидание вслепую (2007), and he did credited work on all of those screenplays with the exception of Секрет Джо Гулда (2000). Tucci has three children with Kate Tucci, who passed away in 2009. Tucci married Felicity Blunt in August 2012.`,
+			height: "1.72 m",
+			mother: "Joan Tucci",
+			father: "Stanley Tucci",
+			films: {
+				create: [
+					{
+						film: {
+							connect: {
+								id: 2,
+							},
+						},
+					},
+				]
+			}
+		}
+	})
 
-	// const actor6 = await prisma.actor.create({
-	// 	data: {
-	// 		name: "John Lithgow",
-	// 		src: "https://m.media-amazon.com/images/M/MV5BMTQzMzUyNDkzNF5BMl5BanBnXkFtZTcwNTMwNTU5MQ@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
-	// 		films: {
-	// 			create: [
-	// 				{
-	// 					film: {
-	// 						connect: {
-	// 							id: 2,
-	// 						},
-	// 					},
-	// 				},
-	// 			]
-	// 		}
-	// 	}
-	// })
+	const actor6 = await prisma.actor.create({
+		data: {
+			name: "John Lithgow",
+			src: "https://m.media-amazon.com/images/M/MV5BMTQzMzUyNDkzNF5BMl5BanBnXkFtZTcwNTMwNTU5MQ@@._V1_QL75_UX140_CR0,0,140,140_.jpg",
+			bornInDate: "October 19, 1945",
+			bornInCity: "Rochester, New York",
+			bornInCountry: "USA",
+			biography: `If "born to the theater" has meaning in determining a person's life path, then John Lithgow is a prime example of this truth. He was born in Rochester, New York, to Sarah Jane (Price), an actress, and Arthur Washington Lithgow III, who was both a theatrical producer and director. John's father was born in Puerto Plata, Dominican Republic, where the Anglo-American Lithgow family had lived for several generations. John moved frequently as a child, while his father founded and managed local and college theaters and Shakespeare festivals throughout the Midwest of the United States. Not until he was 16, and his father became head of the McCarter Theater in Princeton New Jersey, did the family settle down. But for John, the theater was still not a career. He won a scholarship to Harvard University, where he finally caught the acting bug (as well as found a wife). Harvard was followed by a Fulbright scholarship to study at the London Academy of Music and Dramatic Art. Returning from London, his rigorous dramatic training stood him in good stead, and a distinguished career on Broadway gave him one Tony Award for "The Changing Room", a second nomination in 1985 for "Requiem For a Heavyweight", and a third in 1988 for "M. Butterfly". But with critical acclaim came personal confusion, and in the mid 1970s, he and his wife divorced. He entered therapy, and in 1982, his life started in a new direction, the movies - he received an Academy Award nomination for his portrayal of Roberta Muldoon in Мир по Гарпу (1982). A second Oscar nomination followed for Язык нежности (1983), and he met a UCLA economics professor who became his second wife. As the decade of the 1990s came around, he found that he was spending too much time on location, and another career move brought him to television in the hugely successful series Третья планета от Солнца (1996). This production also played a role in bringing him back together with the son from his first marriage, Ian Lithgow, who has a regular role in the series as a dimwitted student.`,
+			height: "1.93 m",
+			mother: "Sarah Jane Price",
+			father: "Arthur Washington Lithgow III",
+			films: {
+				create: [
+					{
+						film: {
+							connect: {
+								id: 2,
+							},
+						},
+					},
+				]
+			}
+		}
+	})
 
-	// const actor7 = await prisma.actor.create({
-	// 	data: {
-	// 		name: "Kynlee Heiman",
-	// 		src: "https://m.media-amazon.com/images/M/MV5BMDNhOTQ2ZTUtYWQ0Ny00ZjY3LTljNjUtNjVmYmZjNTEzZTllXkEyXkFqcGc@._V1_QL75_UX140_CR0,12,140,140_.jpg",
-	// 		films: {
-	// 			create: [
-	// 				{
-	// 					film: {
-	// 						connect: {
-	// 							id: 3,
-	// 						},
-	// 					},
-	// 				},
-	// 			]
-	// 		}
-	// 	}
-	// })
+	const actor7 = await prisma.actor.create({
+		data: {
+			name: "Kynlee Heiman",
+			src: "https://m.media-amazon.com/images/M/MV5BM2UxODM2ZTEtMmU1Mi00ODAwLWJjMTgtYjQ1OTQ2YWI5NjUzXkEyXkFqcGc@._V1_QL75_UX140_CR0,12,140,140_.jpg",
+			bornInDate: "October 13, 2016",
+			bornInCity: "Los Angeles, California",
+			bornInCountry: "USA",
+			biography: `Kynlee is an American Actress who is best known for her social media presence. Kynlee's acting career started at the age of 5 with a Target commercial. Kynlee has been in many commercials in her young career as well as print work. Kynlee has walked in New York fashion week for a top children's fashion brand. Kynlee is a well known social media influencer who inspires many with her amazing gymnastics talents and fitness. Kynlee's has had the leading role in several short films. Kynlee is excited for the release of her first feature film The Best Christmas Pageant Ever coming soon to Theaters this November. Kynlee is one to watch for a star in the making with her rare combination of red hair and blue eyes, she is unforgettable. Kynlee's is wise beyond her years and displays her wide range of acting ability and puts her heart and soul into every project she's involved with.`,
+			height: "1.52 m",
+			mother: "Kristin Heiman",
+			father: "Kyle Heiman",
+			films: {
+				create: [
+					{
+						film: {
+							connect: {
+								id: 3,
+							},
+						},
+					},
+				]
+			}
+		}
+	})
 
-	// const actor8 = await prisma.actor.create({
-	// 	data: {
-	// 		name: "Sebastian Billingsley-Rodriguez",
-	// 		src: "https://m.media-amazon.com/images/M/MV5BNjcyYzFkYjAtYjYwNy00ZDRmLTlmNWQtMmNjMmZiYTMyY2RlXkEyXkFqcGc@._V1_QL75_UX140_CR0,12,140,140_.jpg",
-	// 		films: {
-	// 			create: [
-	// 				{
-	// 					film: {
-	// 						connect: {
-	// 							id: 3,
-	// 						},
-	// 					},
-	// 				},
-	// 			]
-	// 		}
-	// 	}
-	// })
+	const actor8 = await prisma.actor.create({
+		data: {
+			name: "Sebastian Billingsley-Rodriguez",
+			src: "https://m.media-amazon.com/images/M/MV5BNjcyYzFkYjAtYjYwNy00ZDRmLTlmNWQtMmNjMmZiYTMyY2RlXkEyXkFqcGc@._V1_QL75_UX140_CR0,12,140,140_.jpg",
+			bornInDate: "March 5, 2013",
+			bornInCity: "Toronto",
+			bornInCountry: "Canada",
+			biography: `Sebastian Billingsley-Rodriguez is a talented 11-year-old actor who made his debut in the entertainment world at the age of 3 in Noah Hawley's TV series, "Legion". Since then, he has graced both the small and big screens. On television, Sebastian has showcased his versatility with roles in popular shows like "The Magicians," "The X-Files," "Nancy Drew," "When Calls the Heart," "BH90210," and "The Babysitter's Club." He has also lent his voice to beloved animated series on Netflix, such as "CoComelon Lane," "Wonderoos," and "Deepa & Anoop". In the world of movies, Sebastian has acted in notable films like the Disney+ movie, "Peter Pan and Wendy," directed by David Lowry, where he shared the screen with Jude Law and Yara Shahidi. Additionally, he appeared in the Netflix film, "Love, Guaranteed," alongside Rachel Leigh Cook and Damon Wayans Jr. One of his favorite roles includes the supernatural horror film, "Bed Rest," where he acted alongside Melissa Barrera. Prior to these, Sebastian starred in several Christmas-themed films like "Christmas on the Vine," "You Light Up My Christmas," "Sweet Mountain Christmas," and "Christmas on the Vine," showcasing his versatility across genres.Sebastian's talent has been recognized with various accolades, including nine Young Artist Academy Award Nominations and multiple wins. He has also been honored at The Young Entertainer Awards, solidifying his status as a rising star in the industry. Outside of his acting career, Sebastian enjoys spending time with his family and friends and pursuing his passions. He is an avid animal lover and enjoys activities like karate, swimming, reading, playing video games, collecting Hot Wheels, and watching "Scooby-Doo." Sebastian is excited about his upcoming role in Lionsgate's/Kingdom Story Company's feature film, "The Best Christmas Pageant Ever," directed by Dallas Jenkins, where he plays Charlie Bradley alongside Judy Greer, Pete Holms, Lauren Graham, and Molly Belle Wright. With his dedication, passion, and talent, Sebastian continues to make waves in the entertainment industry and is poised for a bright future.`,
+			height: "1.52 m",
+			mother: "Martha Rodriguez",
+			father: "Sebastian Billingsley",
+			films: {
+				create: [
+					{
+						film: {
+							connect: {
+								id: 3,
+							},
+						},
+					},
+				]
+			}
+		}
+	})
 
-	// const actor9 = await prisma.actor.create({
-	// 	data: {
-	// 		name: "Judy Greer",
-	// 		src: "https://m.media-amazon.com/images/M/MV5BMTg5MTAyMzMzMl5BMl5BanBnXkFtZTcwMDY2Mzc2NQ@@._V1_QL75_UX140_CR0,11,140,140_.jpg",
-	// 		films: {
-	// 			create: [
-	// 				{
-	// 					film: {
-	// 						connect: {
-	// 							id: 3,
-	// 						},
-	// 					},
-	// 				},
-	// 			]
-	// 		}
-	// 	}
-	// })
+	const actor9 = await prisma.actor.create({
+		data: {
+			name: "Judy Greer",
+			src: "https://m.media-amazon.com/images/M/MV5BMTg5MTAyMzMzMl5BMl5BanBnXkFtZTcwMDY2Mzc2NQ@@._V1_QL75_UX140_CR0,11,140,140_.jpg",
+			bornInDate: "July 20, 1975",
+			bornInCity: "Detroit, Michigan",
+			bornInCountry: "USA",
+			biography: `Judy Greer was born and raised outside of Detroit, Michigan, as Judith Therese Evans. She is the daughter of Mollie Ann (née Greer), a hospital administrator and former nun, and Richard Evans, a mechanical engineer. She has German, Irish, English, Welsh, and Scottish ancestry. After training for nearly ten years in classical Russian ballet, Greer shifted her interest to acting and was accepted into Chicago's prestigious Theatre School at DePaul University. After a variety of odd jobs during college, from telemarketer to oyster shucker, Greer landed her first on-screen role just three days after graduation -- a small part in the Jason Lee-David Schwimmer comedy Поцелуй понарошку (1998). She flew to Los Angeles for the film's premiere and never left. Greer quickly landed a role in the dark comedy Королевы убийства (1999), with Rose McGowan and Rebecca Gayheart. Greer starred as a school wallflower-turned-babe in a story about high school girls who accidentally kill their best friend and try to cover up the murder. She went on to play a news correspondent in David O. Russell's Три короля (1999), landing a memorable opening love scene with George Clooney. Her performance caught the eye of Hollywood, and she appeared next in Mike Nichols's С какой ты планеты? (2000) as a flight attendant opposite Garry Shandling. Her television credits include a recurring role as Jason Bateman's assistant Kitty on Fox's Задержка в развитии (2003), as well as guest-starring roles on Love & Money (1999), Maggie Winters (1998), and Завтра наступит сегодня (1996). Greer starred opposite Jennifer Garner in Columbia Pictures' romantic comedy Из 13 в 30 (2004), directed by Gary Winick. Greer played an office colleague alongside Garner's character, with whom she shares a checkered past. She co-starred in writer-director M. Night Shyamalan's Таинственный лес (2004), opposite Joaquin Phoenix, Adrien Brody, Bryce Dallas Howard, Sigourney Weaver, and William Hurt. Set in 1897, the film revolves around a close-knit community that lives with the knowledge that a mythical race of creatures resides in the woods surrounding them. Таинственный лес (2004) was released July 30, 2004, by Touchtone Pictures. Greer also co-starred in director Wes Craven's Оборотни (2005), a modern twist on the classic werewolf tale written by Kevin Williamson. The busy actress also landed a co-starring role opposite Orlando Bloom and Susan Sarandon in writer-director Cameron Crowe's Элизабеттаун (2005), playing the sister of Bloom's character and daughter of Sarandon's character. She also joined Jeff Bridges and Jeanne Tripplehorn in the independent film Магнаты (2005) by writer-director Michael Traeger. The film revolves around a motley group of friends who band together to make an amateur porn film. Greer plays a young temptress at the local mattress store who secures a role in the movie by allowing the store to be used as a film location. Greer wrapped production in New York on a co-starring role opposite Tom McCarthy ("The Station Agent") in Danny Leiner's Великое новое чудо (2005) for Serenade Films/Sly Dog Films. The dark comedy tells five different stories against the backdrop of an uncertain post-September 11 New York. The cast also includes Maggie Gyllenhaal, Edie Falco and Tony Shalhoub. She also appeared in writer-director Adam Goldberg's psychological drama Две жизни Грея Эванса (2003), opposite Giovanni Ribisi. The film is about a fictional movie star (Ribisi) and his gradual meltdown and increasing obsession with a young film student and his girlfriend. The stellar cast also included Franka Potente, Christina Ricci, and Jason Lee and debuted at the 2003 Toronto International Film Festival. In the film, Greer plays Samantha, the personal assistant of Ribisi's character. Greer had a starring role as the female lead role in the comedy Убойный молот (2003) as the feisty, fearless Esther, who joins forces with an Orthodox Jewish Blaxploitation hero (Adam Goldberg) to save Hanukkah from an evil son of Santa Claus (Andy Dick). Убойный молот (2003) debuted at the 2003 Sundance Film Festival and premiered on Comedy Central followed by a theatrical release. She also appeared in Адаптация (2002), from director Spike Jonze. In the film, Nicolas Cage stars as self-loathing writer Charlie Kaufman (and twin brother Donald) as he attempts to adapt the novel "The Orchid Thief" for the big screen. Greer played Alice, the waitress with whom he becomes obsessed -- the object of his fantasies. Greer turned in a scene-stealing comedic performance in Свадебный переполох (2001), with Jennifer Lopez and Matthew McConaughey, in which she played Penny, Lopez's sweet but ditsy assistant who tries hard, but often falls a little short. Equally adept at more dramatic roles, Greer gave a standout performance opposite Mel Gibson in Чего хотят женщины (2000), playing a suicidal file clerk rescued by the one man who can hear women's thoughts. Greer's pivotal scene with Gibson is the heart of the film. With a genuine gift for comedy and an engaging on-screen presence, Judy Greer has quickly become one of Hollywood's most captivating talents. Having appeared in such diverse films as Королевы убийства (1999), Чего хотят женщины (2000), Свадебный переполох (2001), Адаптация (2002), and Уилсон (2017) as well as a number of upcoming feature film projects, Greer turns in scene-stealing performances opposite some of the industry's biggest stars.`,
+			height: '1.7 m',
+			mother: "Annie Greer",
+			father: "Richard Evans",
+			films: {
+				create: [
+					{
+						film: {
+							connect: {
+								id: 3,
+							},
+						},
+					},
+				]
+			}
+		}
+	})
 
 	await userService.registerUser({
 		name: "Serj",
 		email: "serj@gmail.com",
 		src: "https://masterpiecer-images.s3.yandex.net/a809a13ba68211eea092b2bae0cf569f:upscaled",
-		password: "serjserj"
+		password: "serjserj",
+		age: 88
 	})
 
 	await userService.registerUser({
 		name: "Roman",
 		email: "roman@gmail.com",
 		src: "https://masterpiecer-images.s3.yandex.net/1d9aa8e5833111eea173beb332dff282:upscaled",
-		password: "romanroman"
+		password: "romanroman",
+		age: 98
 	})
 
 	await userService.registerUser({
 		name: "SeRo",
 		email: "sero@gmail.com",
 		src: "https://masterpiecer-images.s3.yandex.net/bb429de19eed11eea139b646b2a0ffc1:upscaled",
-		password: "serosero"
+		password: "serosero",
+		age: 12
 	})
 
 	await userService.registerUser({
 		name: "Tony",
 		email: "tony@gmail.com",
 		password: "12341234",
-		role: "admin"
+		role: "admin",
+		age: 34
 	})
 
-	// const user1 = await prisma.user.create({
-	// 	data: {
-	// 		name: "Serj",
-	// 		email: "serj@gmail.com",
-	// 		src: "https://masterpiecer-images.s3.yandex.net/a809a13ba68211eea092b2bae0cf569f:upscaled",
-	// 		password: "asasddasd"
-	// 	}
-	// })
+	await prisma.favouriteFilmsOnUsers.createMany({
+		data: [
+			{
+				userId: 1,
+				filmId: 1
+			},
+			{
+				userId: 1,
+				filmId: 2
+			},
+			{
+				userId: 1,
+				filmId: 4
+			},
+			{
+				userId: 1,
+				filmId: 6
+			},
+			{
+				userId: 1,
+				filmId: 7
+			}
+		]
+	})
 
-	// const user2 = await prisma.user.create({
-	// 	data: {
-	// 		name: "Roman",
-	// 		email: "roman@gmail.com",
-	// 		src: "https://masterpiecer-images.s3.yandex.net/1d9aa8e5833111eea173beb332dff282:upscaled",
-	// 		password: "asasddasd"
-
-	// 	}
-	// })
-
-	// const user3 = await prisma.user.create({
-	// 	data: {
-	// 		name: "SeRo",
-	// 		email: "sero@gmail.com",
-	// 		src: "https://masterpiecer-images.s3.yandex.net/bb429de19eed11eea139b646b2a0ffc1:upscaled",
-	// 		password: "asasddasd"
-	// 	}
-	// })
-
-	// const user4 = await prisma.user.create({
-	// 	data: {
-	// 		name: "Tony",
-	// 		email: "tony@gmail.com",
-	// 		password: "asasddasd",
-	// 		role: "admin"
-	// 	}
-	// })	
 
 	const reviews = await prisma.review.createMany({
 		data: [

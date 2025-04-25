@@ -16,7 +16,8 @@ export type UserData = Prisma.UserGetPayload<{
         name: true,
         email: true,
         role: true,
-        src: true
+        src: true,
+        age: true
     }
 }>
 
@@ -35,5 +36,33 @@ export type UserUpdatePayload = Prisma.UserGetPayload<{}>
 export type UserDeletePayload = Prisma.UserGetPayload<{
     select: {
         id: true
+    }
+}>
+
+
+export type UserFavouriteFilm = Prisma.FilmGetPayload<{
+    select: {
+        id: true,
+        name: true,
+        src: true,
+        description: true,
+        rating: true
+    }
+}>
+
+export interface IPostError {
+    status: "error"
+    message: string
+}
+
+export interface IPostSuccess {
+    status: "success"
+}
+
+export type IUserNewData = Prisma.UserGetPayload<{
+    omit: {
+        id: true
+        password: true
+        role: true
     }
 }>

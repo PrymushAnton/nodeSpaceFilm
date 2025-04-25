@@ -1,9 +1,13 @@
 import userRepository from "./userRepository";
 import {
+	IPostError,
+	IPostSuccess,
+	IUserNewData,
 	UserCreateInput,
 	UserCreatePayload,
 	UserData,
 	UserDeletePayload,
+	UserFavouriteFilm,
 	UserNamesPayload,
 	UserUpdatePayload,
 } from "./types";
@@ -201,6 +205,80 @@ async function getUserById(id: number): Promise<ISuccess<UserData> | IError> {
 	return { status: "success", data: user };
 }
 
+async function getUserFavouriteFilms(id: number): Promise<ISuccess<UserFavouriteFilm[]> | IError> {
+	const user = await userRepository.getUserFavouriteFilms(id);
+
+	if (!user) return { status: "error", message: "Films is not found" };
+	if (typeof user === "string")
+		return { status: "error", message: "Error while working with prisma" };
+
+	return { status: "success", data: user };
+}
+
+async function addFavouriteFilm(userId: number, filmId: number): Promise<IPostError | IPostSuccess> {
+	const user = await userRepository.addFavouriteFilm(userId, filmId);
+
+	if (!user) return { status: "error", message: "Film was not liked" };
+	if (typeof user === "string")
+		return { status: "error", message: "Error while working with prisma" };
+
+	return { status: "success" };
+}
+
+async function removeFavouriteFilm(userId: number, filmId: number): Promise<IPostError | IPostSuccess> {
+	const user = await userRepository.removeFavouriteFilm(userId, filmId);
+
+	if (!user) return { status: "error", message: "Film was not unliked" };
+	if (typeof user === "string")
+		return { status: "error", message: "Error while working with prisma" };
+
+	return { status: "success"};
+}
+
+async function isFavourite(userId: number, filmId: number): Promise<ISuccess<boolean> | IError>{
+    const film = await userRepository.isFavourite(userId, filmId)
+
+    if (typeof(film) === "string") return {status: "error", message: "Error while working with prisma"}
+    if (!film) return {status: "success", data: false}
+    return {status: "success", data: true}
+}
+
+async function changePassword(userId: number, password: string): Promise<IPostError | IPostSuccess> {
+	const hashedPassword = await hash(password, 10);
+
+	const user = await userRepository.changePassword(userId, hashedPassword);
+
+	if (!user) return { status: "error", message: "There is no such user" };
+	if (typeof user === "string")
+		return { status: "error", message: "Error while working with prisma" };
+
+	return { status: "success" };
+}
+
+async function changeData(userId: number, data: IUserNewData): Promise<IPostError | IPostSuccess> {
+	if ("name" in data) {
+		const nameUser = await userRepository.findUserByName(data.name);
+		if (nameUser) return { status: "error", message: "User with this name already exists" };
+		if (typeof nameUser === "string")
+			return { status: "error", message: "Error while working with prisma" };
+	}
+
+	if ("email" in data) {
+		const emailUser = await userRepository.findUserByEmail(data.email);
+		if (emailUser) return { status: "error", message: "User with this email already exists" };
+		if (typeof emailUser === "string")
+			return { status: "error", message: "Error while working with prisma" };
+	}
+
+	const newUser = await userRepository.changeData(userId, data);
+
+	if (!newUser) return { status: "error", message: "There is no such user" };
+	if (typeof newUser === "string")
+		return { status: "error", message: "Error while working with prisma" };
+
+	return { status: "success" };
+}
+
 const usersService = {
 	getAllUsers: getAllUsers,
 	getAllNameUsers: getAllNameUsers,
@@ -212,6 +290,12 @@ const usersService = {
 	authUser: authUser,
 	registerUser: registerUser,
 	getUserById: getUserById,
+	getUserFavouriteFilms: getUserFavouriteFilms,
+	addFavouriteFilm: addFavouriteFilm,
+	removeFavouriteFilm: removeFavouriteFilm,
+	isFavourite: isFavourite,
+	changePassword: changePassword,
+	changeData: changeData
 };
 
 export default usersService;

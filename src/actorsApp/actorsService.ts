@@ -12,6 +12,15 @@ async function getAllActors(): Promise<ISuccess<ActorPayload[]> | IError>{
     return {status: "success", data: actors}
 }
 
+async function getPopularActors(): Promise<ISuccess<ActorPayload[]> | IError>{
+    const actors = await actorsRepository.getPopularActors()
+
+    if (!actors) return {status: "error", message: "There are no actors"}
+    if (typeof(actors) === "string") return {status: "error", message: "Error while working with prisma"}
+    
+    return {status: "success", data: actors}
+}
+
 async function getActorById(id: number): Promise<ISuccess<ActorPayloadWithFilms> | IError>{
     const actor = await actorsRepository.getActorById(id)
 
@@ -160,7 +169,8 @@ const actorsService = {
     createOneActor: createOneActor,
     updateOneActor: updateOneActor,
     deleteOneActor: deleteOneActor,
-    getActorFields: getActorFields
+    getActorFields: getActorFields,
+    getPopularActors: getPopularActors
 }
 
 export default actorsService

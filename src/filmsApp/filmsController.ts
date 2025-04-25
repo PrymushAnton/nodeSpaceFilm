@@ -10,6 +10,13 @@ async function getAllFilms(req: Request, res: Response){
 }
 
 
+async function getFourFilms(req: Request, res: Response){
+    const films = await filmsService.getFourFilms()
+    res.json(films)
+}
+
+
+
 async function getFilmById(req: Request, res: Response){
     const id = +req.params.id
     const film = await filmsService.getFilmById(id)
@@ -29,7 +36,6 @@ async function getFilmByIdFull(req: Request, res: Response){
 }
 
 async function getFilmFields(req: Request, res: Response){
-    console.log(1231231231)
     const fields = await filmsService.getFilmFields()
     res.json(fields)
 }
@@ -66,6 +72,7 @@ async function deleteOneFilm(req: Request, res: Response){
 }
 
 
+
 const filmsController = {
     getAllFilms: getAllFilms,
     getFilmById: getFilmById,
@@ -74,7 +81,8 @@ const filmsController = {
     getFilmFields: getFilmFields,
     createOneFilm: createOneFilm,
     updateOneFilm: updateOneFilm,
-    deleteOneFilm: deleteOneFilm
+    deleteOneFilm: deleteOneFilm,
+    getFourFilms: getFourFilms
 }
 
 export default filmsController
